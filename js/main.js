@@ -142,19 +142,33 @@
     });
   });
 
-  /* ---------- CTAs de pilares: preseleccionan el servicio ---------- */
-  var serviceSelect = document.getElementById('servicio');
+  /* ---------- CTA Directo a WhatsApp (Web en PC / App en Móvil) ---------- */
+  var ctaWaBtn = document.getElementById('cta-whatsapp-btn');
+  var defaultWaMessage = 'Hola Konnyx, vengo de su página web y me gustaría cotizar un proyecto para mi negocio.';
+
+  if (ctaWaBtn) {
+    ctaWaBtn.href = getWhatsAppUrl(defaultWaMessage);
+    ctaWaBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      openWhatsApp(ctaWaBtn.getAttribute('data-custom-msg') || defaultWaMessage);
+    });
+  }
+
+  /* ---------- CTAs de servicios: personalizan el mensaje de WhatsApp ---------- */
   document.querySelectorAll('[data-service]').forEach(function (a) {
     a.addEventListener('click', function () {
-      if (!serviceSelect) return;
-      var opt = Array.prototype.slice.call(serviceSelect.options).find(function (o) {
-        return o.dataset.key === a.dataset.service;
-      });
-      if (opt) serviceSelect.value = opt.value;
+      var key = a.dataset.service;
+      var serviceName = (key === 'diseno') ? 'Diseño Gráfico' : ((key === 'web') ? 'Desarrollo Web' : 'un proyecto digital');
+      var customMsg = 'Hola Konnyx, me interesa cotizar un servicio de ' + serviceName + ' para mi marca. ¿Podrían brindarme información y presupuesto?';
+      
+      if (ctaWaBtn) {
+        ctaWaBtn.setAttribute('data-custom-msg', customMsg);
+        ctaWaBtn.href = getWhatsAppUrl(customMsg);
+      }
     });
   });
 
-  /* ---------- Formulario exclusivo directo a WhatsApp ---------- */
+  /* ---------- Fallback para formulario en caso de existir ---------- */
   var form = document.getElementById('contact-form');
   var statusEl = document.getElementById('form-status');
 
@@ -167,7 +181,6 @@
       var servicio = String(data.get('servicio') || '');
       var mensaje = String(data.get('mensaje') || '').trim();
 
-      // Validación accesible
       var valid = true;
       ['nombre', 'mensaje'].forEach(function (id) {
         var el = document.getElementById(id);

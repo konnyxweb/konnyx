@@ -317,7 +317,7 @@
     if (!contactSection) return;
 
     var infoCol = contactSection.querySelector('.mx-auto > div:first-child');
-    var formCol = document.getElementById('contact-form');
+    var formCol = document.getElementById('contact-cta') || document.getElementById('contact-form');
 
     if (infoCol) {
       gsap.fromTo(
