@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konnyx — Diseño gráfico y desarrollo web a medida</title>
+  <meta name="description"
+    content="Konnyx une estrategia visual y desarrollo web: identidad de marca, piezas gráficas, sitios a medida, landing pages y e-commerce rápidos y bien posicionados." />
+  <meta name="theme-color" content="#020617" />
+  <link rel="canonical" href="https://konnyx.com/" />
+  <link rel="icon" type="image/png" href="/static/favicon.png" />
+  <link rel="apple-touch-icon" href="/static/favicon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Konnyx — Diseño gráfico y desarrollo web" />
+  <meta property="og:description" content="Identidad visual y sitios web a medida, de la idea a la entrega." />
+  <meta property="og:url" content="https://konnyx.com/" />
+  <meta property="og:locale" content="es_ES" />
+  <!-- Agrega assets/img/og-cover.jpg (1200x630) y descomenta:
+  <meta property="og:image" content="https://konnyx.com/assets/img/og-cover.jpg" /> -->
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS (CDN) + configuración de marca -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#020617',
+            surface: '#0F172A',
+            line: '#1E293B',
+            paper: '#F8FAFC',
+            mute: '#94A3B8',
+            brand: '#2563EB',
+            sky: '#60A5FA',
+            ice: '#93C5FD',
+            cyan: '#22D3EE',
+            wa: '#25D366'
+          },
+          fontFamily: {
+            display: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Konnyx",
+    "url": "https://konnyx.com/",
+    "description": "Diseño gráfico, branding y desarrollo web a medida.",
+    "sameAs": [
+      "https://www.instagram.com/konnyxweb",
+      "https://www.tiktok.com/@konnyxweb"
+    ],
+    "areaServed": "Worldwide",
+    "knowsAbout": ["Diseño gráfico", "Branding", "Desarrollo web", "SEO técnico"]
+  }
+  </script>
+</head>
+
+<body class="bg-ink text-paper font-sans antialiased">
+  <a href="#contenido" class="skip-link">Saltar al contenido</a>
+
+  <!-- ============ HEADER ============ -->
+  <header id="navbar" class="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-ink/80 backdrop-blur-md">
+    <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8" aria-label="Principal">
+      <a href="/#inicio" class="flex items-center gap-2" aria-label="Konnyx, ir al inicio">
+        <img src="/static/logo.png" alt="Konnyx" class="h-8 md:h-9 w-auto object-contain hover:opacity-90 transition-opacity" />
+      </a>
+
+      <!-- Menú Desktop de Primer Nivel -->
+      <ul class="hidden items-center gap-6 lg:gap-7 text-sm font-medium text-mute md:flex">
+        <li><a class="nav-link hover:text-paper transition-colors" href="/#diseno-grafico">Servicios</a></li>
+        
+        <!-- MEGA MENÚ: DISEÑO & WEB -->
+        <li class="relative group" id="nav-catalogos-item">
+          <button type="button" class="nav-link inline-flex items-center gap-1.5 py-2 hover:text-paper focus:outline-none transition-colors"
+                  aria-expanded="false" aria-haspopup="true">
+            <span>Diseño &amp; Web</span>
+            <svg class="h-3.5 w-3.5 text-mute transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+
+          <!-- Dropdown Mega Menu -->
+          <div class="invisible opacity-0 translate-y-2 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto absolute left-1/2 -translate-x-1/2 top-full pt-2 w-80 sm:w-96 transition-all duration-200 ease-out z-50">
+            <div class="rounded-2xl border border-line bg-surface/95 p-3.5 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
+              <div class="px-2.5 pb-2 text-[11px] font-semibold uppercase tracking-wider text-mute flex items-center justify-between border-b border-line/60">
+                <span>Portafolios &amp; Proyectos</span>
+                <span class="inline-flex items-center gap-1 text-[10px] text-sky font-normal"><span class="h-1.5 w-1.5 rounded-full bg-sky animate-pulse"></span> En vivo</span>
+              </div>
+              
+              <div class="mt-2 grid gap-1.5">
+                <!-- Opción 1: Catálogo de Diseño Gráfico -->
+                <a href="/diseno-grafico" class="group/sub flex items-start gap-3.5 rounded-xl p-2.5 transition-colors hover:bg-white/[0.04]">
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-sky/30 bg-sky/10 text-sky transition-colors group-hover/sub:border-sky group-hover/sub:bg-sky/20">
+                    <i class="fa-solid fa-pen-nib text-base"></i>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-paper group-hover/sub:text-sky transition-colors">Diseño Gráfico</span>
+                      <span class="rounded-full bg-sky/10 px-1.5 py-0.5 text-[9px] font-medium text-sky border border-sky/20">Catálogo</span>
+                    </div>
+                    <p class="mt-0.5 text-xs text-mute leading-relaxed">
+                      Logotipos, manuales de marca, empaques, tarjetas y flyers.
+                    </p>
+                  </div>
+                </a>
+
+                <!-- Opción 2: Catálogo de Desarrollo Web -->
+                <a href="/desarrollo-web" class="group/sub flex items-start gap-3.5 rounded-xl p-2.5 transition-colors hover:bg-white/[0.04]">
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-cyan/30 bg-cyan/10 text-cyan transition-colors group-hover/sub:border-cyan group-hover/sub:bg-cyan/20">
+                    <i class="fa-solid fa-code text-base"></i>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-paper group-hover/sub:text-cyan transition-colors">Desarrollo Web</span>
+                      <span class="rounded-full bg-cyan/10 px-1.5 py-0.5 text-[9px] font-medium text-cyan border border-cyan/20">Fichas Técnicas</span>
+                    </div>
+                    <p class="mt-0.5 text-xs text-mute leading-relaxed">
+                      Landing pages, e-commerce, plataformas web y dashboards.
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- PRIMER NIVEL DE MENÚ: CREA TU CATÁLOGO DIGITAL -->
+        <li>
+          <a class="nav-link inline-flex items-center gap-2 text-sky hover:text-white font-semibold transition-colors" href="/catalogo">
+            <span class="h-2 w-2 rounded-full bg-cyan animate-pulse" aria-hidden="true"></span>
+            <span>Crea tu Catálogo Digital</span>
+          </a>
+        </li>
+
+        <li><a class="nav-link hover:text-paper transition-colors" href="/#contacto">Contacto</a></li>
+      </ul>
+
+      <!-- Botones de Acción Derecha -->
+      <div class="flex items-center gap-3">
+        
+        <a href="/#contacto" class="btn-primary hidden md:inline-flex">Hablemos</a>
+        <button id="menu-toggle" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line md:hidden"
+                aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path id="icon-open" d="M4 8h16M4 16h16" />
+            <path id="icon-close" d="M6 6l12 12M18 6L6 18" class="hidden" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="hidden border-t border-line bg-ink md:hidden">
+      <ul class="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4 text-base font-medium">
+        <li><a class="mobile-link" href="/#diseno-grafico" onclick="setMenu(false)">Servicios</a></li>
+        
+        <!-- Bloque Diseño & Web móvil -->
+        <li class="border-y border-line/60 py-2.5 my-1">
+          <span class="px-3 text-xs font-semibold uppercase tracking-wider text-mute block mb-1.5">Diseño &amp; Web</span>
+          <div class="flex flex-col gap-1 pl-1">
+            <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-sky hover:bg-sky/10 transition-colors" href="/diseno-grafico" onclick="setMenu(false)">
+              <i class="fa-solid fa-pen-nib w-4 text-center"></i>
+              <div>
+                <span class="font-semibold block text-paper">Catálogo Diseño Gráfico</span>
+                <span class="text-xs text-mute">Logos, tarjetas, flyers y empaques</span>
+              </div>
+            </a>
+            <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-cyan hover:bg-cyan/10 transition-colors" href="/desarrollo-web" onclick="setMenu(false)">
+              <i class="fa-solid fa-code w-4 text-center"></i>
+              <div>
+                <span class="font-semibold block text-paper">Catálogo Desarrollo Web</span>
+                <span class="text-xs text-mute">Sitios web, tiendas y fichas técnicas</span>
+              </div>
+            </a>
+          </div>
+        </li>
+
+        <!-- PRIMER NIVEL EN MÓVIL: CREA TU CATÁLOGO DIGITAL -->
+        <li class="my-1.5">
+          <a class="flex items-center justify-between rounded-2xl border border-cyan/30 bg-cyan/10 px-4 py-3 text-sm font-bold text-cyan hover:bg-cyan/20 transition-all shadow-sm"
+             href="/catalogo" onclick="setMenu(false)">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-store text-base"></i>
+              <span>Crea tu Catálogo Digital</span>
+            </span>
+            <span class="h-2 w-2 rounded-full bg-cyan animate-pulse"></span>
+          </a>
+        </li>
+
+        <li><a class="mobile-link" href="/#contacto" onclick="setMenu(false)">Contacto</a></li>
+        <li><a class="btn-primary mt-3 w-full justify-center" href="/#contacto" onclick="setMenu(false)">Hablemos</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="relative isolate overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32" data-gsap="section">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -left-24 top-24 -z-10 h-72 w-72 rounded-full bg-brand/40 blur-[110px]"
+        data-parallax="18" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-24 top-48 -z-10 h-80 w-80 rounded-full bg-cyan/20 blur-[120px]"
+        data-parallax="-12" aria-hidden="true"></div>
+
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        <p data-hero-fade data-gsap="hero-badge"
+          class="mb-6 inline-flex items-center gap-2 rounded-full border border-line px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-mute">
+          <span class="h-2 w-2 rounded-full bg-brand" aria-hidden="true"></span>
+          Estudio de diseño y desarrollo web
+        </p>
+
+        <h1 data-gsap="title"
+          class="font-display text-[clamp(2.6rem,8vw,6.5rem)] font-bold leading-[0.98] tracking-tight">
+          <span class="block overflow-hidden pb-1"><span class="hero-line block">Marcas que se ven</span></span>
+          <span class="block overflow-hidden pb-1"><span class="hero-line block grad-text">y sitios que
+              rinden.</span></span>
+        </h1>
+
+        <p data-hero-fade data-gsap="hero-text" class="mt-8 max-w-2xl text-lg leading-relaxed text-mute md:text-xl">
+          En Konnyx unimos estrategia visual y desarrollo web en un solo equipo: diseñamos tu identidad
+          y construimos el sitio rápido, claro y listo para convertir.
+        </p>
+
+        <div data-hero-fade data-gsap="hero-cta" class="mt-10 flex flex-wrap gap-4">
+          <a href="#diseno-grafico" class="btn-pillar btn-blue">01 · Diseño Gráfico</a>
+          <a href="#desarrollo-web" class="btn-pillar btn-cyan">02 · Desarrollo Web</a>
+          <a href="#contacto" class="btn-ghost">Cuéntame tu proyecto →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee decorativo (scrub) -->
+    <div class="overflow-hidden border-y border-line py-5" aria-hidden="true">
+      <div data-marquee
+        class="flex w-[200%] gap-10 whitespace-nowrap font-display text-3xl font-semibold uppercase tracking-tight text-line md:text-5xl">
+        <span>Branding</span><span class="text-sky">✦</span><span>Landing pages</span><span
+          class="text-cyan">✦</span><span>Identidad visual</span><span
+          class="text-sky">✦</span><span>E-commerce</span><span class="text-sky">✦</span><span>Empaques</span><span
+          class="text-cyan">✦</span><span>SEO técnico</span><span class="text-sky">✦</span><span>Dirección de
+          arte</span><span class="text-sky">✦</span><span>Apps web</span>
+      </div>
+    </div>
+
+    <!-- ============ PILARES ============ -->
+    <section id="pilares" class="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32" aria-labelledby="pilares-title"
+      data-gsap="section">
+      <div class="mb-14 max-w-3xl" data-reveal data-gsap="block">
+        <p class="eyebrow" data-gsap="eyebrow">Qué hacemos</p>
+        <h2 id="pilares-title" class="section-title" data-gsap="title">Dos disciplinas, una sola visión.</h2>
+        <p class="mt-5 text-lg text-mute" data-gsap="text">Cada proyecto puede arrancar por cualquiera de los dos
+          frentes, o por ambos. La coherencia entre lo que se ve y cómo funciona es lo que nos diferencia.</p>
+      </div>
+
+      <div class="relative isolate grid gap-6 lg:grid-cols-2">
+        <!-- Resplandores detrás del cristal: sin ellos el glassmorphism no se aprecia -->
+        <div class="glow -left-16 top-6 h-72 w-72 bg-brand/50  blur-[90px]" aria-hidden="true"></div>
+        <div class="glow right-0 top-1/3 h-80 w-80 bg-cyan/30 blur-[100px]" aria-hidden="true"></div>
+        <div class="glow left-1/3 -bottom-10 h-60 w-60 bg-sky/25 blur-[90px]" aria-hidden="true"></div>
+
+        <!-- Pilar 01 -->
+        <article id="diseno-grafico" class="pillar pillar-blue" data-reveal="left" data-gsap="pillar">
+          <header class="flex items-start justify-between">
+            <span class="pillar-num text-sky">01</span>
+            <span class="pill text-sky">Diseño Gráfico</span>
+          </header>
+          <h3 class="mt-8 font-display text-3xl font-bold md:text-4xl">Identidad y piezas con criterio.</h3>
+          <p class="mt-4 text-mute">
+            Partimos de la estrategia de marca y terminamos en archivos listos para producir:
+            una identidad consistente que funciona en pantalla, en impresión y en redes.
+          </p>
+
+          <h4 class="pillar-label">Entregables principales</h4>
+          <ul class="pillar-list">
+            <li>Identidad visual y branding: logo, paleta, tipografía y manual</li>
+            <li>Piezas editoriales y publicitarias</li>
+            <li>Empaques y artes finales listos para imprenta</li>
+            <li>Dirección de arte y contenido para redes (carruseles, portadas, plantillas)</li>
+          </ul>
+
+          <h4 class="pillar-label">Herramientas clave</h4>
+          <ul class="flex flex-wrap gap-2">
+            <li class="tag">Illustrator</li>
+            <li class="tag">Photoshop</li>
+            <li class="tag">InDesign</li>
+            <li class="tag">Figma</li>
+          </ul>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a href="/diseno-grafico" class="btn-pillar btn-blue">Abrir catálogo de diseño →</a>
+            <a href="#contacto" data-service="diseno" class="text-sm font-semibold text-sky hover:underline">Cotizar
+              diseño</a>
+          </div>
+        </article>
+
+        <!-- Pilar 02 -->
+        <article id="desarrollo-web" class="pillar pillar-cyan" data-reveal="right" data-gsap="pillar">
+          <header class="flex items-start justify-between">
+            <span class="pillar-num text-cyan">02</span>
+            <span class="pill text-cyan">Desarrollo Web</span>
+          </header>
+          <h3 class="mt-8 font-display text-3xl font-bold md:text-4xl">Sitios rápidos, a medida.</h3>
+          <p class="mt-4 text-mute">
+            Construimos con tecnología simple y sólida: HTML semántico, CSS moderno y JavaScript justo.
+            Menos peso, mejor posicionamiento y mantenimiento sin dolores de cabeza.
+          </p>
+
+          <h4 class="pillar-label">Entregables principales</h4>
+          <ul class="pillar-list">
+            <li>Sitios web a medida y landing pages</li>
+            <li>E-commerce y catálogos</li>
+            <li>Aplicaciones web ligeras</li>
+            <li>Rendimiento (Core Web Vitals) y SEO técnico</li>
+          </ul>
+
+          <h4 class="pillar-label">Stack clave</h4>
+          <ul class="flex flex-wrap gap-2">
+            <li class="tag">HTML5</li>
+            <li class="tag">Tailwind CSS</li>
+            <li class="tag">JavaScript</li>
+            <li class="tag">GSAP</li>
+            <li class="tag">Hosting estático</li>
+          </ul>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a href="/desarrollo-web" class="btn-pillar btn-cyan">Abrir catálogo web →</a>
+            <a href="#contacto" data-service="web" class="text-sm font-semibold text-cyan hover:underline">Cotizar sitio
+              web</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PORTAFOLIO: DISEÑO GRÁFICO ============ -->
+    <section id="proyectos" class="border-t border-line bg-surface/40 py-24 md:py-32"
+      aria-labelledby="proyectos-diseno-title" data-gsap="section">
+      <div id="portafolio-diseno" class="mx-auto max-w-[1600px] px-4 sm:px-6 md:px-8">
+        <div class="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div class="max-w-2xl" data-reveal data-gsap="block">
+            <p class="eyebrow" data-gsap="eyebrow">Muestra de trabajo · 01</p>
+            <h2 id="proyectos-diseno-title" class="section-title" data-gsap="title">Portafolio de Diseño Gráfico.</h2>
+            <p class="mt-4 text-lg text-mute" data-gsap="text">Identidades visuales, sistemas de empaque y dirección de
+              arte con criterio y coherencia.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 self-start md:self-end">
+            <a href="/diseno-grafico" class="btn-pillar btn-blue text-xs py-2 px-4">Ver catálogo completo →</a>
+            <a href="#contacto" data-service="diseno" class="btn-ghost text-xs py-2 px-4">Cotizar diseño</a>
+          </div>
+        </div>
+
+        <!-- 2 FILAS DE 5 COLUMNAS (10 PROYECTOS) -->
+        <ul id="project-grid-diseno" class="project-grid grid gap-4 sm:gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5" data-reveal
+          data-gsap="grid">
+          
+          <!-- 01: Trattoria Da Lucy -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/logotipos/trattoria-da-lucy.jpg" alt="Trattoria Da Lucy" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Logos &amp; Identidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Trattoria Da Lucy</h3>
+              <p class="text-xs text-mute line-clamp-2">Identidad visual gastronómica y manual de marca.</p>
+            </a>
+          </li>
+
+          <!-- 02: Maiquetía -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/logotipos/maiquetia.jpg" alt="Logotipo Maiquetía" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Logos &amp; Identidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Logotipo Maiquetía</h3>
+              <p class="text-xs text-mute line-clamp-2">Diseño de marca institucional y vectorización.</p>
+            </a>
+          </li>
+
+          <!-- 03: Recambios Roport -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/logotipos/recambios-roport.jpg" alt="Recambios Roport" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Logos &amp; Identidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Recambios Roport</h3>
+              <p class="text-xs text-mute line-clamp-2">Identidad corporativa para autopartes.</p>
+            </a>
+          </li>
+
+          <!-- 04: Dulce Bendición -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/flyers-afiches/dulce-bendicion.jpg" alt="Dulce Bendición" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Flyers &amp; Publicidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Dulce Bendición</h3>
+              <p class="text-xs text-mute line-clamp-2">Flyer publicitario y arte para repostería fina.</p>
+            </a>
+          </li>
+
+          <!-- 05: Pizza House Helados -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/flyers-afiches/pizza-house-helados.jpg" alt="Pizza House Helados" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Flyers &amp; Publicidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Pizza House Helados</h3>
+              <p class="text-xs text-mute line-clamp-2">Afiche promocional de alto impacto visual.</p>
+            </a>
+          </li>
+
+          <!-- 06: Recambios Automotrices Flyer -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/flyers-afiches/recambios-01.jpg" alt="Recambios Flyer" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Flyers &amp; Publicidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Recambios Flyer</h3>
+              <p class="text-xs text-mute line-clamp-2">Pieza publicitaria para lubricantes y repuestos.</p>
+            </a>
+          </li>
+
+          <!-- 07: OmniMedical -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/logotipos/omnimedical.jpg" alt="OmniMedical" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Logos &amp; Identidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">OmniMedical</h3>
+              <p class="text-xs text-mute line-clamp-2">Identidad visual y branding para sector salud.</p>
+            </a>
+          </li>
+
+          <!-- 08: Cliteca -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb bg-surface" data-gsap="media">
+                <img src="/static/diseno/logotipos/cliteca.png" alt="Cliteca" class="object-contain p-6" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Logos &amp; Identidad</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Cliteca</h3>
+              <p class="text-xs text-mute line-clamp-2">Logotipo y sistema gráfico corporativo.</p>
+            </a>
+          </li>
+
+          <!-- 09: Veningtec -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb bg-surface" data-gsap="media">
+                <img src="/static/diseno/logotipos/veningtec.png" alt="Veningtec" class="object-contain p-6" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Branding Tecnológico</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Veningtec</h3>
+              <p class="text-xs text-mute line-clamp-2">Diseño de imagotipo y paleta digital.</p>
+            </a>
+          </li>
+
+          <!-- 10: Calzados & Moda -->
+          <li class="project" data-category="diseno" data-gsap="card">
+            <a href="/diseno-grafico" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/diseno/logotipos/zapateria-banner.jpg" alt="Calzados &amp; Moda" loading="lazy">
+              </div>
+              <p class="project-cat text-sky">Publicidad &amp; Banner</p>
+              <h3 class="text-base font-bold text-white group-hover:text-sky transition-colors line-clamp-1">Calzados &amp; Moda</h3>
+              <p class="text-xs text-mute line-clamp-2">Banner publicitario y material gráfico comercial.</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ PORTAFOLIO: DESARROLLO WEB ============ -->
+    <section id="portafolio-web" class="border-t border-line bg-surface/20 py-24 md:py-32"
+      aria-labelledby="proyectos-web-title" data-gsap="section">
+      <div class="mx-auto max-w-[1600px] px-4 sm:px-6 md:px-8">
+        <div class="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div class="max-w-2xl" data-reveal data-gsap="block">
+            <p class="eyebrow text-cyan" data-gsap="eyebrow">Muestra de trabajo · 02</p>
+            <h2 id="proyectos-web-title" class="section-title" data-gsap="title">Portafolio de Desarrollo Web.</h2>
+            <p class="mt-4 text-lg text-mute" data-gsap="text">Sitios de alto rendimiento, código limpio, SEO técnico y
+              microinteracciones fluidas.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 self-start md:self-end">
+            <a href="/desarrollo-web" class="btn-pillar btn-cyan text-xs py-2 px-4">Ver catálogo con fichas técnicas
+              →</a>
+            <a href="#contacto" data-service="web" class="btn-ghost text-xs py-2 px-4">Cotizar sitio web</a>
+          </div>
+        </div>
+
+        <!-- 2 FILAS DE 5 COLUMNAS (10 PROYECTOS) -->
+        <ul id="project-grid-web" class="project-grid grid gap-4 sm:gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5" data-reveal
+          data-gsap="grid">
+          
+          <!-- 01: HommyShop -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/demos/banner-hommyshop.jpg" alt="HommyShop" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">E-Commerce</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">HommyShop</h3>
+              <p class="text-xs text-mute line-clamp-2">Boutique de moda con catálogo y pedidos a WhatsApp.</p>
+            </a>
+          </li>
+
+          <!-- 02: Sol Gráficas -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/demos/banner-solgraficas.jpg" alt="Sol Gráficas" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Sitios Corporativos</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Sol Gráficas</h3>
+              <p class="text-xs text-mute line-clamp-2">Plataforma comercial y cotizador de servicios gráficos.</p>
+            </a>
+          </li>
+
+          <!-- 03: Multiservicios CarCross -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/demos/banner-carcross.jpg" alt="CarCross" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Catálogo Web</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">CarCross Autopartes</h3>
+              <p class="text-xs text-mute line-clamp-2">Catálogo automotriz de repuestos y lubricantes.</p>
+            </a>
+          </li>
+
+          <!-- 04: Barbería & Salón -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/agenda-barberia.jpg" alt="Barbería &amp; Salón" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Aplicaciones Web</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Barbería &amp; Estilo</h3>
+              <p class="text-xs text-mute line-clamp-2">Sistema web de reserva de citas y gestión de turnos.</p>
+            </a>
+          </li>
+
+          <!-- 05: Perfumería Online -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/perfumeria-web.jpg" alt="Perfumería Online" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">E-Commerce</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Perfumes &amp; Aromas</h3>
+              <p class="text-xs text-mute line-clamp-2">Tienda virtual de fragancias con carrito interactivo.</p>
+            </a>
+          </li>
+
+          <!-- 06: Tríos Fast Food -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/fastfood-trios.jpg" alt="Tríos Fast Food" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Menú Digital</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Tríos Hamburguesería</h3>
+              <p class="text-xs text-mute line-clamp-2">Menú gastronómico interactivo con pedido por WhatsApp.</p>
+            </a>
+          </li>
+
+          <!-- 07: Recambios Santander -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/recambios-santander.jpg" alt="Recambios Santander" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Catálogo Web</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Recambios Santander</h3>
+              <p class="text-xs text-mute line-clamp-2">Portal web de piezas mecánicas y lubricantes Eni.</p>
+            </a>
+          </li>
+
+          <!-- 08: Boutique Neón -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/boutique-neon.png" alt="Boutique Neón" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">E-Commerce</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Boutique Femenina</h3>
+              <p class="text-xs text-mute line-clamp-2">Catálogo de prendas con galería de modelos y tallas.</p>
+            </a>
+          </li>
+
+          <!-- 09: Konnyx Studio Dark -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/studio-dark.jpg" alt="Studio Dark" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Sitios Corporativos</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Konnyx Studio Dark</h3>
+              <p class="text-xs text-mute line-clamp-2">Plataforma tecnológica con microinteracciones GSAP 3.</p>
+            </a>
+          </li>
+
+          <!-- 10: Pasarela Cashea -->
+          <li class="project" data-category="web" data-gsap="card">
+            <a href="/desarrollo-web" class="project-link group">
+              <div class="thumb" data-gsap="media">
+                <img src="/static/web/cashea-fintech.jpg" alt="Cashea FinTech" loading="lazy">
+              </div>
+              <p class="project-cat text-cyan">Plataformas Web</p>
+              <h3 class="text-base font-bold text-white group-hover:text-cyan transition-colors line-clamp-1">Pasarela Cashea</h3>
+              <p class="text-xs text-mute line-clamp-2">Integración de compras en cuotas sin interés.</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section id="contacto" class="relative isolate overflow-hidden border-t border-line py-24 md:py-32"
+      aria-labelledby="contacto-title" data-gsap="section">
+      <div
+        class="pointer-events-none absolute left-1/2 top-0 -z-10 h-64 w-[40rem] -translate-x-1/2 rounded-full bg-brand/10 blur-[120px]"
+        aria-hidden="true"></div>
+
+      <div class="mx-auto grid max-w-7xl gap-14 px-5 md:px-8 lg:grid-cols-2">
+        <div data-reveal data-gsap="contact-info">
+          <p class="eyebrow" data-gsap="eyebrow">Contacto</p>
+          <h2 id="contacto-title" class="section-title" data-gsap="title">¿Hacemos algo juntos?</h2>
+          <p class="mt-5 max-w-md text-lg text-mute" data-gsap="text">Cuéntame qué necesitas. Te respondo con una
+            propuesta clara de alcance, tiempos y costo.</p>
+
+          <ul class="mt-10 space-y-4 text-lg" data-gsap="contact-links">
+            <li><a class="contact-link" id="link-whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a class="contact-link" id="link-email" href="#">Correo</a></li>
+            <li><a class="contact-link" href="https://www.instagram.com/konnyxweb" target="_blank"
+                rel="noopener">Instagram · DM @konnyxweb</a></li>
+            <li><a class="contact-link" href="https://www.tiktok.com/@konnyxweb" target="_blank" rel="noopener">TikTok ·
+                @konnyxweb</a></li>
+          </ul>
+        </div>
+
+        <form id="contact-form" class="space-y-5 rounded-3xl border border-line bg-surface p-6 md:p-8" data-reveal
+          data-gsap="form" novalidate>
+          <div>
+            <label for="nombre" class="label">Nombre</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required class="field" />
+          </div>
+          <div>
+            <label for="email" class="label">Correo</label>
+            <input id="email" name="email" type="email" autocomplete="email" class="field" />
+          </div>
+          <div>
+            <label for="servicio" class="label">¿Qué necesitas?</label>
+            <select id="servicio" name="servicio" class="field">
+              <option value="Diseño Gráfico" data-key="diseno">Diseño Gráfico</option>
+              <option value="Desarrollo Web" data-key="web">Desarrollo Web</option>
+              <option value="Diseño Gráfico + Desarrollo Web" data-key="ambos">Ambos</option>
+            </select>
+          </div>
+          <div>
+            <label for="mensaje" class="label">Cuéntame de tu proyecto</label>
+            <textarea id="mensaje" name="mensaje" rows="4" required class="field"></textarea>
+          </div>
+          <p id="form-status" class="min-h-[1.25rem] text-sm text-sky" role="status" aria-live="polite"></p>
+          <div class="flex flex-wrap gap-3">
+            <button type="submit" data-channel="whatsapp" class="btn-whatsapp">Enviar por WhatsApp</button>
+            <button type="submit" data-channel="email" class="btn-ghost">Enviar por correo</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-line">
+    <div
+      class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-mute md:flex-row md:px-8">
+      <p>© <span id="year">2026</span> Konnyx. Todos los derechos reservados.</p>
+      <ul class="flex gap-6">
+        <li><a class="hover:text-paper transition-colors" href="https://www.instagram.com/konnyxweb" target="_blank"
+            rel="noopener">Instagram</a></li>
+        <li><a class="hover:text-paper transition-colors" href="https://www.tiktok.com/@konnyxweb" target="_blank"
+            rel="noopener">TikTok</a></li>
+        <li><a class="hover:text-paper transition-colors" href="/#inicio">Volver arriba ↑</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- GSAP 3 + ScrollTrigger (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Módulo de animaciones GSAP dedicado (compatible con file:/// y http://) -->
+  <script src="js/gsap-animations.js"></script>
+  <!-- Lógica interactiva principal -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>

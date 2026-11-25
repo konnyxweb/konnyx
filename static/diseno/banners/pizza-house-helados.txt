@@ -1,0 +1,5 @@
+Nombre: Pizza House Helados
+Categoria: Banners
+Specs: Banner promocional publicitario para lanzamiento de productos gastronómicos.
+Stack: Photoshop, Illustrator
+Precio: Cotizar

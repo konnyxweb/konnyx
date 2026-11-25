@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Desarrollo Web — {{ config.brand_name }}</title>
+  <meta name="description" content="Catálogo digital de desarrollo web de Konnyx: landing pages de alta conversión, e-commerce, sitios corporativos y aplicaciones web con fichas técnicas interactivas.">
+
+  <link rel="icon" type="image/png" href="/static/favicon.png" />
+  <link rel="apple-touch-icon" href="/static/favicon.png" />
+
+  <!-- Google Fonts: Inter & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fuentes: Inter oficial (idéntica a index.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ink: '#020617',
+            surface: '#0f172a',
+            line: '#1e293b',
+            paper: '#f8fafc',
+            mute: '#94a3b8',
+            brand: '#2563eb',
+            'brand-dark': '#1d4ed8',
+            sky: '#60a5fa',
+            ice: '#93c5fd',
+            cyan: '#22d3ee',
+            wa: '#25d366'
+          },
+          fontFamily: {
+            display: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide & FontAwesome Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Estilos globales de Konnyx -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <style>
+    .catalog-card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .catalog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -15px rgba(34, 211, 238, 0.3);
+      border-color: rgba(34, 211, 238, 0.55);
+    }
+    .catalog-card.selected {
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.6), 0 20px 40px -15px rgba(34, 211, 238, 0.35);
+    }
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .catalog-card:hover .thumb-img {
+      transform: scale(1.05);
+    }
+    .filter-tab[aria-pressed="true"] {
+      background: linear-gradient(135deg, #22d3ee, #2563eb);
+      color: #ffffff;
+      border-color: #22d3ee;
+      box-shadow: 0 4px 15px -3px rgba(34, 211, 238, 0.5);
+    }
+    #projectModal:not(.hidden) {
+      animation: modalFadeIn 0.25s ease forwards;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body class="bg-ink text-paper font-sans antialiased selection:bg-brand selection:text-white">
+  <a href="#catalogo-web" class="skip-link">Saltar al catálogo web</a>
+
+  <!-- ============ HEADER ============ -->
+  <header id="navbar" class="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-ink/80 backdrop-blur-md">
+    <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8" aria-label="Principal">
+      <a href="/#inicio" class="flex items-center gap-2" aria-label="Konnyx, ir al inicio">
+        <img src="/static/logo.png" alt="Konnyx" class="h-8 md:h-9 w-auto object-contain hover:opacity-90 transition-opacity" />
+      </a>
+
+      <!-- Menú Desktop de Primer Nivel -->
+      <ul class="hidden items-center gap-6 lg:gap-7 text-sm font-medium text-mute md:flex">
+        <li><a class="nav-link hover:text-paper transition-colors" href="/#diseno-grafico">Servicios</a></li>
+        
+        <!-- MEGA MENÚ: DISEÑO & WEB -->
+        <li class="relative group" id="nav-catalogos-item">
+          <button type="button" class="nav-link inline-flex items-center gap-1.5 py-2 hover:text-paper focus:outline-none transition-colors"
+                  aria-expanded="false" aria-haspopup="true">
+            <span>Diseño &amp; Web</span>
+            <svg class="h-3.5 w-3.5 text-mute transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+
+          <!-- Dropdown Mega Menu -->
+          <div class="invisible opacity-0 translate-y-2 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto absolute left-1/2 -translate-x-1/2 top-full pt-2 w-80 sm:w-96 transition-all duration-200 ease-out z-50">
+            <div class="rounded-2xl border border-line bg-surface/95 p-3.5 shadow-2xl backdrop-blur-xl ring-1 ring-white/10">
+              <div class="px-2.5 pb-2 text-[11px] font-semibold uppercase tracking-wider text-mute flex items-center justify-between border-b border-line/60">
+                <span>Portafolios &amp; Proyectos</span>
+                <span class="inline-flex items-center gap-1 text-[10px] text-sky font-normal"><span class="h-1.5 w-1.5 rounded-full bg-sky animate-pulse"></span> En vivo</span>
+              </div>
+              
+              <div class="mt-2 grid gap-1.5">
+                <!-- Opción 1: Catálogo de Diseño Gráfico -->
+                <a href="/diseno-grafico" class="group/sub flex items-start gap-3.5 rounded-xl p-2.5 transition-colors hover:bg-white/[0.04]">
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-sky/30 bg-sky/10 text-sky transition-colors group-hover/sub:border-sky group-hover/sub:bg-sky/20">
+                    <i class="fa-solid fa-pen-nib text-base"></i>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-paper group-hover/sub:text-sky transition-colors">Diseño Gráfico</span>
+                      <span class="rounded-full bg-sky/10 px-1.5 py-0.5 text-[9px] font-medium text-sky border border-sky/20">Catálogo</span>
+                    </div>
+                    <p class="mt-0.5 text-xs text-mute leading-relaxed">
+                      Logotipos, manuales de marca, empaques, tarjetas y flyers.
+                    </p>
+                  </div>
+                </a>
+
+                <!-- Opción 2: Catálogo de Desarrollo Web -->
+                <a href="/desarrollo-web" class="group/sub flex items-start gap-3.5 rounded-xl p-2.5 transition-colors hover:bg-white/[0.04]">
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-cyan/30 bg-cyan/10 text-cyan transition-colors group-hover/sub:border-cyan group-hover/sub:bg-cyan/20">
+                    <i class="fa-solid fa-code text-base"></i>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-paper group-hover/sub:text-cyan transition-colors">Desarrollo Web</span>
+                      <span class="rounded-full bg-cyan/10 px-1.5 py-0.5 text-[9px] font-medium text-cyan border border-cyan/20">Fichas Técnicas</span>
+                    </div>
+                    <p class="mt-0.5 text-xs text-mute leading-relaxed">
+                      Landing pages, e-commerce, plataformas web y dashboards.
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- PRIMER NIVEL DE MENÚ: CREA TU CATÁLOGO DIGITAL -->
+        <li>
+          <a class="nav-link inline-flex items-center gap-2 text-sky hover:text-white font-semibold transition-colors" href="/catalogo">
+            <span class="h-2 w-2 rounded-full bg-cyan animate-pulse" aria-hidden="true"></span>
+            <span>Crea tu Catálogo Digital</span>
+          </a>
+        </li>
+
+        <li><a class="nav-link hover:text-paper transition-colors" href="/#contacto">Contacto</a></li>
+      </ul>
+
+      <!-- Botones de Acción Derecha -->
+      <div class="flex items-center gap-3">
+        <button id="nav-selected-btn" onclick="openQuoteDrawer()" type="button"
+                class="relative inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-xs font-semibold text-mute hover:border-cyan hover:text-white transition-all"
+                title="Ver sitios seleccionados para cotizar">
+          <i class="fa-regular fa-bookmark text-cyan"></i>
+          <span class="hidden sm:inline">Cotizar lista</span>
+          <span id="nav-selected-count" class="flex h-5 w-5 items-center justify-center rounded-full bg-brand text-[11px] font-bold text-white shadow-sm">0</span>
+        </button>
+        <a href="/#contacto" class="btn-primary hidden md:inline-flex">Hablemos</a>
+        <button id="menu-toggle" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line md:hidden"
+                aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path id="icon-open" d="M4 8h16M4 16h16" />
+            <path id="icon-close" d="M6 6l12 12M18 6L6 18" class="hidden" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="hidden border-t border-line bg-ink md:hidden">
+      <ul class="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4 text-base font-medium">
+        <li><a class="mobile-link" href="/#diseno-grafico" onclick="setMenu(false)">Servicios</a></li>
+        
+        <!-- Bloque Diseño & Web móvil -->
+        <li class="border-y border-line/60 py-2.5 my-1">
+          <span class="px-3 text-xs font-semibold uppercase tracking-wider text-mute block mb-1.5">Diseño &amp; Web</span>
+          <div class="flex flex-col gap-1 pl-1">
+            <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-sky hover:bg-sky/10 transition-colors" href="/diseno-grafico" onclick="setMenu(false)">
+              <i class="fa-solid fa-pen-nib w-4 text-center"></i>
+              <div>
+                <span class="font-semibold block text-paper">Catálogo Diseño Gráfico</span>
+                <span class="text-xs text-mute">Logos, tarjetas, flyers y empaques</span>
+              </div>
+            </a>
+            <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-cyan hover:bg-cyan/10 transition-colors" href="/desarrollo-web" onclick="setMenu(false)">
+              <i class="fa-solid fa-code w-4 text-center"></i>
+              <div>
+                <span class="font-semibold block text-paper">Catálogo Desarrollo Web</span>
+                <span class="text-xs text-mute">Sitios web, tiendas y fichas técnicas</span>
+              </div>
+            </a>
+          </div>
+        </li>
+
+        <!-- PRIMER NIVEL EN MÓVIL: CREA TU CATÁLOGO DIGITAL -->
+        <li class="my-1.5">
+          <a class="flex items-center justify-between rounded-2xl border border-cyan/30 bg-cyan/10 px-4 py-3 text-sm font-bold text-cyan hover:bg-cyan/20 transition-all shadow-sm"
+             href="/catalogo" onclick="setMenu(false)">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-store text-base"></i>
+              <span>Crea tu Catálogo Digital</span>
+            </span>
+            <span class="h-2 w-2 rounded-full bg-cyan animate-pulse"></span>
+          </a>
+        </li>
+
+        <li><a class="mobile-link" href="/#contacto" onclick="setMenu(false)">Contacto</a></li>
+        <li><a class="btn-primary mt-3 w-full justify-center" href="/#contacto" onclick="setMenu(false)">Hablemos</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ============ HERO DE DESARROLLO WEB ============ -->
+    <section class="relative isolate overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24" data-gsap="section">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -left-28 top-20 -z-10 h-72 w-72 rounded-full bg-cyan/25 blur-[110px]" data-parallax="15" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-28 top-36 -z-10 h-80 w-80 rounded-full bg-brand/35 blur-[120px]" data-parallax="-12" aria-hidden="true"></div>
+
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        <!-- Eyebrow badge -->
+        <p data-hero-fade data-gsap="hero-badge" class="mb-6 inline-flex items-center gap-2 rounded-full border border-line px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-mute">
+          <span class="h-2 w-2 rounded-full bg-cyan" aria-hidden="true"></span>
+          Catálogo Oficial · Disciplina 02
+        </p>
+
+        <!-- Titular (mismo ajuste y tipografía que index.html) -->
+        <h1 data-gsap="title" class="font-display text-[clamp(2.6rem,8vw,6.5rem)] font-bold leading-[0.98] tracking-tight">
+          <span class="block overflow-hidden pb-1"><span class="hero-line block">Portafolio &amp; Fichas de</span></span>
+          <span class="block overflow-hidden pb-1"><span class="hero-line block grad-text">Desarrollo Web.</span></span>
+        </h1>
+
+        <p data-hero-fade data-gsap="hero-text" class="mt-8 max-w-2xl text-lg leading-relaxed text-mute md:text-xl">
+          Explora nuestros sitios web, landing pages y plataformas digitales. Abre cada proyecto para inspeccionar su ficha técnica detallada: arquitectura, stack tecnológico, rendimiento y cotización directa.
+        </p>
+
+        <!-- BUSCADOR EN TIEMPO REAL -->
+        <div data-hero-fade data-gsap="hero-cta" class="mt-10 max-w-3xl">
+          <div class="relative flex items-center rounded-2xl border border-line/80 bg-surface/90 p-2 shadow-2xl backdrop-blur-md focus-within:border-cyan focus-within:ring-2 focus-within:ring-cyan/30 transition-all">
+            <i class="fa-solid fa-magnifying-glass ml-4 text-mute"></i>
+            <input type="text" id="catalog-search"
+                   oninput="handleSearch(this.value)"
+                   placeholder="Buscar en web: landing, tienda, corporativo, GSAP, Tailwind, Flask, catálogo..."
+                   class="w-full bg-transparent px-4 py-3 text-sm text-paper placeholder:text-mute/60 focus:outline-none"
+                   autocomplete="off">
+            <button id="clear-search-btn" onclick="clearSearch()" type="button"
+                    class="hidden rounded-full p-2 text-mute hover:text-white transition-colors"
+                    title="Limpiar búsqueda">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="mt-3 flex items-center justify-between text-xs text-mute px-2">
+            <span id="search-results-count">Mostrando {{ products | length }} proyectos web</span>
+            <span>Haz clic en cualquier proyecto para abrir su Ficha Técnica interactiva</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BARRA DE FILTROS POR CATEGORÍA WEB ============ -->
+    <section id="catalogo-web" class="sticky top-16 z-40 border-y border-line/70 bg-ink/90 py-3.5 backdrop-blur-md">
+      <div class="mx-auto max-w-7xl px-5 md:px-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        
+        <!-- Píldoras de Categorías Web -->
+        <div class="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 sm:pb-0" role="group" aria-label="Filtrar por categoría">
+          <button type="button" class="filter-tab px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-all whitespace-nowrap"
+                  data-category="all" aria-pressed="true" onclick="filterCategory('all', this)">
+            Todos ({{ products | length }})
+          </button>
+          
+          {% for cat in categories %}
+          <button type="button" class="filter-tab px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-all whitespace-nowrap"
+                  data-category="{{ cat | lower }}" aria-pressed="false" onclick="filterCategory('{{ cat | lower }}', this)">
+            {{ cat }}
+          </button>
+          {% endfor %}
+
+          <button type="button" id="tab-favorites" class="filter-tab px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-all whitespace-nowrap"
+                  data-category="favorites" aria-pressed="false" onclick="filterCategory('favorites', this)">
+            <i class="fa-solid fa-bookmark text-cyan mr-1"></i> Seleccionados (<span id="tab-selected-count">0</span>)
+          </button>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-3">
+          <a href="/diseno-grafico" class="text-xs text-sky hover:underline flex items-center gap-1 font-semibold">
+            Ver catálogo de diseño <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mensaje sin resultados -->
+    <div id="no-results" class="hidden mx-auto max-w-7xl px-5 py-20 text-center">
+      <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-line bg-surface/50 text-mute">
+        <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+      </div>
+      <h3 class="mt-4 text-xl font-bold">No se encontraron proyectos web</h3>
+      <p class="mt-2 text-sm text-mute">Intenta buscar con otros términos o selecciona "Todos".</p>
+      <button onclick="clearSearch()" class="mt-6 btn-ghost text-xs py-2 px-4">Ver todos los proyectos web</button>
+    </div>
+
+    <!-- ============ CUADRÍCULA DE PROYECTOS WEB ============ -->
+    <section class="py-16 md:py-24" data-gsap="section">
+      <div class="mx-auto max-w-7xl px-5 md:px-8">
+        
+        {% if products %}
+        <div id="grid-web" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal data-gsap="grid">
+          {% for p in products %}
+          <article class="catalog-card project relative flex flex-col justify-between rounded-2xl border border-line bg-surface/70 p-5 overflow-hidden group"
+                   data-id="{{ p.id }}"
+                   data-name="{{ p.name | lower }}"
+                   data-category="{{ p.category | lower }}"
+                   data-specs="{{ p.tech_specs | lower }}"
+                   data-gsap="card">
+            
+            <div>
+              <!-- Miniatura del sitio web (Mockup / Preview) -->
+              <div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-white/10 bg-slate-900 mb-4 cursor-pointer"
+                   onclick="openModal('{{ p.id }}')">
+                {% if p.image_src %}
+                  <img src="{{ p.image_src }}" alt="{{ p.name }}" class="thumb-img" loading="lazy">
+                {% else %}
+                  <div class="thumb {{ p.thumb_class or 'thumb-2' }} w-full h-full flex items-center justify-center text-4xl font-black text-white/90">
+                    <span>{{ p.icon or '</>' }}</span>
+                  </div>
+                {% endif %}
+
+                <!-- Badge de categoría -->
+                <span class="absolute top-3 left-3 rounded-full border border-white/20 bg-ink/80 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan backdrop-blur-md">
+                  {{ p.category }}
+                </span>
+
+                <!-- Botón de Bookmark / Selección rápida -->
+                <button type="button"
+                        onclick="toggleSelectProject('{{ p.id }}', event)"
+                        class="select-btn absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-ink/80 text-mute hover:text-cyan hover:scale-110 active:scale-95 transition-all backdrop-blur-md"
+                        title="Guardar proyecto web para cotizar">
+                  <i class="fa-regular fa-bookmark text-xs"></i>
+                </button>
+
+                <!-- Overlay hover con icono de inspección -->
+                <div class="absolute inset-0 bg-ink/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-semibold text-xs backdrop-blur-sm pointer-events-none">
+                  <i class="fa-solid fa-expand text-cyan"></i> Abrir Ficha Técnica
+                </div>
+              </div>
+
+              <!-- Título y descripción -->
+              <h3 class="font-display text-lg font-bold text-paper group-hover:text-cyan transition-colors cursor-pointer"
+                  onclick="openModal('{{ p.id }}')">
+                {{ p.name }}
+              </h3>
+              <p class="mt-2 text-xs leading-relaxed text-mute line-clamp-2">
+                {{ p.tech_specs }}
+              </p>
+            </div>
+
+            <!-- Footer de la tarjeta: Tags de stack tecnológico -->
+            <div class="mt-5 pt-4 border-t border-line/60 flex items-center justify-between">
+              <div class="flex flex-wrap gap-1.5">
+                {% for tool in p.tools %}
+                  <span class="rounded-full border border-line bg-surface/50 px-2 py-0.5 text-[10px] text-cyan">{{ tool }}</span>
+                {% endfor %}
+              </div>
+              <button type="button"
+                      onclick="openModal('{{ p.id }}')"
+                      class="text-xs font-semibold text-cyan hover:underline flex items-center gap-1">
+                Ficha <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="py-20 text-center max-w-lg mx-auto space-y-4">
+          <div class="h-16 w-16 mx-auto rounded-2xl bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan text-2xl">
+            <i class="fa-solid fa-code"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white">Catálogo Web en Preparación</h3>
+          <p class="text-mute text-sm leading-relaxed">
+            Actualmente no hay proyectos web cargados. Puedes subir tus sitios web, landing pages y e-commerce con sus fotos y fichas técnicas desde el Panel de Administración.
+          </p>
+          <div class="pt-2">
+            <a href="/admin" class="btn-pillar btn-cyan text-xs py-2.5 px-5 inline-flex items-center gap-2">
+              <i class="fa-solid fa-plus-circle"></i> Ir al Admin para agregar proyectos web
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- ============ CTA CONTACTO ============ -->
+    <section class="border-t border-line bg-surface/30 py-20">
+      <div class="mx-auto max-w-4xl px-5 text-center">
+        <p class="eyebrow text-cyan">¿Tienes una idea o proyecto web?</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold">Construyamos tu sitio rápido y a medida.</h2>
+        <p class="mt-4 text-mute text-base leading-relaxed">
+          Diseñamos y programamos plataformas digitales con velocidad extrema, microinteracciones y SEO técnico que convierten visitantes en clientes.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href="/#contacto" class="btn-pillar btn-cyan">Cotizar desarrollo a medida</a>
+          <a href="https://wa.me/{{ config.whatsapp_number }}?text={{ 'Hola Konnyx, quiero consultar por el desarrollo de un sitio web para mi marca.' | urlencode }}"
+             target="_blank" rel="noopener" class="btn-whatsapp">
+            <i class="fa-brands fa-whatsapp text-lg"></i> Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-line">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-mute md:flex-row md:px-8">
+      <p>© <span id="year">2026</span> Konnyx. Todos los derechos reservados.</p>
+      <ul class="flex gap-6">
+        <li><a class="hover:text-paper transition-colors" href="https://www.instagram.com/konnyxweb" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a class="hover:text-paper transition-colors" href="https://www.tiktok.com/@konnyxweb" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a class="hover:text-paper transition-colors" href="/#inicio">Volver arriba ↑</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DE FICHA TÉCNICA (DESARROLLO WEB) -->
+  <!-- ========================================================================= -->
+  <div id="projectModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md hidden p-4 transition-all">
+    <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-3xl border border-line bg-surface p-6 md:p-8 shadow-2xl">
+      
+      <!-- Botón cerrar -->
+      <button onclick="closeModal()" type="button" class="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full border border-line bg-ink/70 text-mute hover:text-white transition-colors" aria-label="Cerrar ventana">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Previsualización / Screenshot del sitio -->
+      <div id="modal-image-container" class="relative aspect-[3/4] max-w-sm sm:max-w-md mx-auto w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-950 mb-6 flex items-center justify-center">
+        <img id="modal-img" src="" alt="" class="hidden w-full h-full object-cover">
+        <div id="modal-placeholder" class="text-5xl font-black text-white/90">&lt;/&gt;</div>
+      </div>
+
+      <!-- Datos del proyecto -->
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="rounded-full border border-cyan/40 bg-cyan/10 px-3 py-0.5 text-xs font-semibold text-cyan uppercase tracking-wider">Desarrollo Web</span>
+          <span id="modal-category" class="rounded-full border border-white/10 bg-surface/50 px-3 py-0.5 text-xs text-mute uppercase tracking-wider">Categoría</span>
+        </div>
+
+        <h2 id="modal-title" class="font-display text-2xl md:text-3xl font-bold text-paper mb-3">Nombre del Proyecto Web</h2>
+        
+        <!-- Ficha Técnica -->
+        <div class="mt-4 rounded-xl border border-line/60 bg-ink/50 p-4">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-cyan mb-1.5 flex items-center gap-1.5">
+            <i class="fa-solid fa-code"></i> Ficha Técnica & Arquitectura
+          </h4>
+          <p id="modal-specs" class="text-sm leading-relaxed text-slate-300">Detalles técnicos de arquitectura, velocidad y alcance del sitio.</p>
+        </div>
+
+        <!-- Métricas y Stack -->
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-mute">
+          <div class="rounded-xl border border-line/40 bg-ink/30 p-3">
+            <span class="block uppercase tracking-wider text-[10px] text-cyan font-semibold">Stack Tecnológico:</span>
+            <div id="modal-tools" class="mt-1.5 flex flex-wrap gap-1.5"></div>
+          </div>
+          <div class="rounded-xl border border-line/40 bg-ink/30 p-3">
+            <span class="block uppercase tracking-wider text-[10px] text-cyan font-semibold">Alcance y Presupuesto:</span>
+            <span id="modal-price" class="text-sm font-bold text-paper mt-1 block">Cotización a medida</span>
+          </div>
+        </div>
+
+        <!-- Acciones del Modal -->
+        <div class="mt-8 pt-5 border-t border-line flex flex-wrap gap-3">
+          <a id="modal-whatsapp-btn" href="#" target="_blank" rel="noopener"
+             class="btn-whatsapp flex-1 justify-center py-3 text-xs uppercase tracking-wider font-bold">
+            <i class="fa-brands fa-whatsapp text-base"></i> Cotizar sitio como este
+          </a>
+          <button id="modal-select-btn" onclick="modalToggleSelect()" type="button"
+                  class="btn-ghost flex-1 justify-center py-3 text-xs uppercase tracking-wider font-bold">
+            <i class="fa-regular fa-bookmark"></i> <span id="modal-select-text">Agregar a mi lista</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- BARRA FLOTANTE DE COTIZACIÓN MÚLTIPLE -->
+  <!-- ========================================================================= -->
+  <div id="quote-drawer" class="fixed bottom-6 inset-x-4 md:inset-x-auto md:right-8 z-50 hidden transition-all duration-300">
+    <div class="flex items-center justify-between gap-4 rounded-2xl border border-cyan/40 bg-surface/95 px-5 py-4 shadow-2xl backdrop-blur-xl md:gap-8">
+      <div>
+        <p class="text-xs font-bold text-cyan uppercase tracking-wider">
+          <i class="fa-solid fa-layer-group mr-1.5"></i> <span id="drawer-count">1</span> proyecto(s) seleccionado(s)
+        </p>
+        <p class="text-xs text-mute mt-0.5 hidden sm:block">Cotiza todos estos sitios web en un solo mensaje</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="clearSelectedProjects()" class="text-xs text-mute hover:text-white px-2 py-1">Vaciar</button>
+        <button onclick="sendGroupQuoteWhatsapp()" class="btn-whatsapp py-2 px-4 text-xs font-bold uppercase tracking-wider shadow-lg shadow-wa/30">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Cotizar por WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Datos inyectados desde Flask -->
+  <script>
+    window.PROJECTS_DATA = {{ products | tojson }};
+    window.KONNYX_CONFIG = {{ config | tojson }};
+  </script>
+
+  <!-- GSAP y Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="/js/gsap-animations.js"></script>
+
+  <script>
+    var selectedProjectIds = new Set();
+    var currentCategory = 'all';
+    var currentActiveModalId = null;
+
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    var toggle = document.getElementById('menu-toggle');
+    var menu = document.getElementById('mobile-menu');
+    var iconOpen = document.getElementById('icon-open');
+    var iconClose = document.getElementById('icon-close');
+
+    function setMenu(open) {
+      if (!toggle || !menu) return;
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('hidden', !open);
+      if (iconOpen) iconOpen.classList.toggle('hidden', open);
+      if (iconClose) iconClose.classList.toggle('hidden', !open);
+    }
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+      });
+    }
+
+    function filterCategory(category, btn) {
+      currentCategory = category;
+      document.querySelectorAll('.filter-tab').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      applyFilters();
+    }
+
+    function handleSearch(query) {
+      var clearBtn = document.getElementById('clear-search-btn');
+      if (clearBtn) clearBtn.classList.toggle('hidden', !query);
+      applyFilters();
+    }
+
+    function clearSearch() {
+      var searchInput = document.getElementById('catalog-search');
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      var clearBtn = document.getElementById('clear-search-btn');
+      if (clearBtn) clearBtn.classList.add('hidden');
+      applyFilters();
+    }
+
+    function applyFilters() {
+      var searchInput = document.getElementById('catalog-search');
+      var query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      var cards = document.querySelectorAll('.catalog-card');
+      var visibleCount = 0;
+
+      cards.forEach(function (card) {
+        var id = card.dataset.id;
+        var name = card.dataset.name || '';
+        var category = card.dataset.category || '';
+        var specs = card.dataset.specs || '';
+
+        var matchesCategory = false;
+        if (currentCategory === 'all') {
+          matchesCategory = true;
+        } else if (currentCategory === 'favorites') {
+          matchesCategory = selectedProjectIds.has(id);
+        } else {
+          matchesCategory = (category === currentCategory);
+        }
+
+        var matchesSearch = true;
+        if (query) {
+          matchesSearch = name.includes(query) || category.includes(query) || specs.includes(query);
+        }
+
+        var show = matchesCategory && matchesSearch;
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      var countEl = document.getElementById('search-results-count');
+      if (countEl) countEl.textContent = 'Mostrando ' + visibleCount + ' proyectos web';
+
+      var noResults = document.getElementById('no-results');
+      if (noResults) noResults.classList.toggle('hidden', visibleCount > 0);
+
+      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+    }
+
+    function toggleSelectProject(id, e) {
+      if (e) e.stopPropagation();
+      if (selectedProjectIds.has(id)) {
+        selectedProjectIds.delete(id);
+      } else {
+        selectedProjectIds.add(id);
+      }
+      updateSelectionUI();
+    }
+
+    function updateSelectionUI() {
+      var count = selectedProjectIds.size;
+      var navCount = document.getElementById('nav-selected-count');
+      var tabCount = document.getElementById('tab-selected-count');
+      var drawerCount = document.getElementById('drawer-count');
+
+      if (navCount) navCount.textContent = count;
+      if (tabCount) tabCount.textContent = count;
+      if (drawerCount) drawerCount.textContent = count;
+
+      document.querySelectorAll('.catalog-card').forEach(function (card) {
+        var id = card.dataset.id;
+        var isSelected = selectedProjectIds.has(id);
+        card.classList.toggle('selected', isSelected);
+        var icon = card.querySelector('.select-btn i');
+        if (icon) {
+          if (isSelected) {
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid', 'text-cyan');
+          } else {
+            icon.classList.remove('fa-solid', 'text-cyan');
+            icon.classList.add('fa-regular');
+          }
+        }
+      });
+
+      var drawer = document.getElementById('quote-drawer');
+      if (drawer) drawer.classList.toggle('hidden', count === 0);
+
+      if (currentActiveModalId) syncModalSelectButton(currentActiveModalId);
+    }
+
+    function openQuoteDrawer() {
+      if (selectedProjectIds.size > 0) {
+        var favTab = document.getElementById('tab-favorites');
+        if (favTab) filterCategory('favorites', favTab);
+        document.getElementById('catalogo-web').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert('Aún no has seleccionado ningún proyecto web. Haz clic en el marcador de los sitios que te interesen para cotizarlos juntos.');
+      }
+    }
+
+    function clearSelectedProjects() {
+      selectedProjectIds.clear();
+      updateSelectionUI();
+      if (currentCategory === 'favorites') {
+        var allTab = document.querySelector('[data-category="all"]');
+        if (allTab) filterCategory('all', allTab);
+      }
+    }
+
+    function sendGroupQuoteWhatsapp() {
+      if (selectedProjectIds.size === 0) return;
+      var selectedList = [];
+      selectedProjectIds.forEach(function (id) {
+        var proj = window.PROJECTS_DATA.find(function (p) { return p.id === id; });
+        if (proj) selectedList.push('• ' + proj.name + ' (' + proj.category + ')');
+      });
+
+      var text = 'Hola ' + window.KONNYX_CONFIG.brand_name + ', me interesa cotizar los siguientes proyectos web de su catálogo:\n\n' +
+                 selectedList.join('\n') +
+                 '\n\n¿Podrían darme información de tiempos, alcance y presupuesto?';
+
+      var url = 'https://wa.me/' + window.KONNYX_CONFIG.whatsapp_number + '?text=' + encodeURIComponent(text);
+      window.open(url, '_blank', 'noopener');
+    }
+
+    function openModal(id) {
+      currentActiveModalId = id;
+      var proj = window.PROJECTS_DATA.find(function (p) { return p.id === id; });
+      if (!proj) return;
+
+      var modal = document.getElementById('projectModal');
+      var img = document.getElementById('modal-img');
+      var placeholder = document.getElementById('modal-placeholder');
+      var title = document.getElementById('modal-title');
+      var category = document.getElementById('modal-category');
+      var specs = document.getElementById('modal-specs');
+      var tools = document.getElementById('modal-tools');
+      var price = document.getElementById('modal-price');
+      var waBtn = document.getElementById('modal-whatsapp-btn');
+
+      if (title) title.textContent = proj.name;
+      if (category) category.textContent = proj.category;
+      if (specs) specs.textContent = proj.tech_specs || 'Arquitectura web limpia y componentes modernos diseñados para alto rendimiento.';
+      if (price) price.textContent = proj.price || 'Cotizar a medida';
+
+      if (proj.image_src) {
+        if (img) {
+          img.src = proj.image_src;
+          img.alt = proj.name;
+          img.classList.remove('hidden');
+        }
+        if (placeholder) placeholder.classList.add('hidden');
+      } else {
+        if (img) img.classList.add('hidden');
+        if (placeholder) {
+          placeholder.classList.remove('hidden');
+          placeholder.textContent = proj.icon || '</>';
+        }
+      }
+
+      if (tools) {
+        tools.innerHTML = '';
+        var toolList = proj.tools || ['HTML5', 'Tailwind CSS', 'GSAP', 'JavaScript'];
+        toolList.forEach(function (t) {
+          var span = document.createElement('span');
+          span.className = 'rounded-full border border-line bg-surface/50 px-2.5 py-0.5 text-[11px] text-cyan';
+          span.textContent = t;
+          tools.appendChild(span);
+        });
+      }
+
+      if (waBtn) {
+        var msg = 'Hola ' + window.KONNYX_CONFIG.brand_name + ', me interesa el proyecto web "' + proj.name + '" (' + proj.category + ') de su catálogo y quiero cotizarlo.';
+        waBtn.href = 'https://wa.me/' + window.KONNYX_CONFIG.whatsapp_number + '?text=' + encodeURIComponent(msg);
+      }
+
+      syncModalSelectButton(id);
+      if (modal) modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      currentActiveModalId = null;
+      var modal = document.getElementById('projectModal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function syncModalSelectButton(id) {
+      var selectText = document.getElementById('modal-select-text');
+      var isSelected = selectedProjectIds.has(id);
+      if (selectText) selectText.textContent = isSelected ? 'Quitar de mi lista' : 'Agregar a mi lista';
+    }
+
+    function modalToggleSelect() {
+      if (currentActiveModalId) toggleSelectProject(currentActiveModalId);
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+    var modalEl = document.getElementById('projectModal');
+    if (modalEl) {
+      modalEl.addEventListener('click', function (e) {
+        if (e.target === modalEl) closeModal();
+      });
+    }
+  </script>
+</body>
+</html>

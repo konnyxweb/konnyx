@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración — {{ config.brand_name }}</title>
+  <meta name="description" content="Panel de administración de Konnyx para carga y gestión de proyectos de diseño gráfico y desarrollo web.">
+  <link rel="icon" type="image/png" href="/static/favicon.png" />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ink: '#020617',
+            surface: '#0f172a',
+            surfaceCard: '#1e293b',
+            line: '#334155',
+            paper: '#f8fafc',
+            mute: '#94a3b8',
+            brand: '#2563eb',
+            'brand-dark': '#1d4ed8',
+            sky: '#60a5fa',
+            cyan: '#22d3ee',
+            wa: '#25d366'
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.7);
+    }
+    .dropzone {
+      border: 2px dashed rgba(96, 165, 250, 0.4);
+      transition: all 0.25s ease;
+    }
+    .dropzone.dragover {
+      border-color: #22d3ee;
+      background: rgba(34, 211, 238, 0.08);
+      transform: scale(1.01);
+    }
+    .thumb-preview {
+      aspect-ratio: 16/10;
+      object-fit: cover;
+    }
+    .badge-glow-sky {
+      box-shadow: 0 0 15px -3px rgba(96, 165, 250, 0.4);
+    }
+    .badge-glow-cyan {
+      box-shadow: 0 0 15px -3px rgba(34, 211, 238, 0.4);
+    }
+  </style>
+</head>
+
+<body class="bg-ink text-paper font-sans antialiased min-h-screen flex flex-col selection:bg-brand selection:text-white">
+
+  <!-- ============ HEADER DE ADMIN ============ -->
+  <header class="sticky top-0 z-50 border-b border-line/80 bg-ink/90 backdrop-blur-md">
+    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:px-8">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-2 group">
+          <img src="/static/logo.png" alt="Konnyx" class="h-8 w-auto object-contain transition-opacity group-hover:opacity-85" />
+        </a>
+        <span class="hidden sm:inline-block h-5 w-px bg-line"></span>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-brand/15 border border-brand/40 px-3 py-1 text-xs font-semibold text-sky">
+          <i class="fa-solid fa-sliders text-[11px]"></i> Admin Catálogos
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 text-xs font-medium">
+        <a href="/" target="_blank" class="flex items-center gap-1.5 rounded-xl border border-line bg-surface/70 px-3 py-2 text-mute hover:text-white hover:border-slate-500 transition-colors">
+          <i class="fa-solid fa-house"></i> <span class="hidden md:inline">Ver</span> Inicio
+        </a>
+        <a href="/diseno-grafico" target="_blank" class="flex items-center gap-1.5 rounded-xl border border-sky/30 bg-sky/10 px-3 py-2 text-sky hover:bg-sky/20 transition-colors">
+          <i class="fa-solid fa-pen-nib"></i> <span class="hidden md:inline">Catálogo</span> Diseño
+        </a>
+        <a href="/desarrollo-web" target="_blank" class="flex items-center gap-1.5 rounded-xl border border-cyan/30 bg-cyan/10 px-3 py-2 text-cyan hover:bg-cyan/20 transition-colors">
+          <i class="fa-solid fa-code"></i> <span class="hidden md:inline">Catálogo</span> Web
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ CONTENIDO PRINCIPAL ============ -->
+  <main class="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 md:px-8 py-8">
+
+    <!-- Mensajes Flash de notificación -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-6 space-y-2">
+          {% for category, message in messages %}
+            <div class="rounded-xl p-4 text-sm flex items-start gap-3 border shadow-lg animate-fade-in
+                        {% if category == 'success' %}
+                          bg-emerald-950/70 border-emerald-500/50 text-emerald-200
+                        {% else %}
+                          bg-rose-950/70 border-rose-500/50 text-rose-200
+                        {% endif %}">
+              <i class="{% if category == 'success' %}fa-solid fa-circle-check text-emerald-400{% else %}fa-solid fa-triangle-exclamation text-rose-400{% endif %} mt-0.5 text-base"></i>
+              <div class="flex-1 font-medium">{{ message }}</div>
+              <button type="button" onclick="this.parentElement.remove()" class="text-mute hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Encabezado y Estadísticas rápidas -->
+    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2.5">
+          <span>Gestión de Catálogos &amp; Fotos</span>
+          <span class="inline-flex items-center gap-1 rounded-full bg-cyan/15 border border-cyan/40 px-2.5 py-0.5 text-xs font-semibold text-cyan">
+            <span class="h-2 w-2 rounded-full bg-cyan animate-pulse"></span> Dinámico
+          </span>
+        </h1>
+        <p class="text-sm text-mute mt-1">
+          Carga fotos de tus trabajos con su categoría. Se guardan en <code class="text-sky font-mono text-xs bg-surface px-1.5 py-0.5 rounded border border-line">static/</code> y se muestran al instante en los catálogos y en la rotación aleatoria del Index.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Píldoras de conteo rápido -->
+        <div class="flex items-center gap-2 rounded-2xl border border-line bg-surface/70 px-3.5 py-2">
+          <i class="fa-solid fa-pen-nib text-sky text-sm"></i>
+          <div>
+            <div class="text-[10px] text-mute uppercase tracking-wider font-semibold">Diseño</div>
+            <div class="text-sm font-bold text-white">{{ diseno_projects|length }} fotos</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 rounded-2xl border border-line bg-surface/70 px-3.5 py-2">
+          <i class="fa-solid fa-code text-cyan text-sm"></i>
+          <div>
+            <div class="text-[10px] text-mute uppercase tracking-wider font-semibold">Web</div>
+            <div class="text-sm font-bold text-white">{{ web_projects|length }} fotos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pestañas de Navegación del Admin -->
+    <div class="flex items-center gap-2 border-b border-line mb-8 pb-3 overflow-x-auto">
+      <button type="button" id="tab-btn-upload" onclick="switchAdminTab('upload')"
+              class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all bg-brand text-white shadow-lg shadow-brand/30">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <span>Agregar Nuevo Trabajo</span>
+      </button>
+
+      <button type="button" id="tab-btn-gallery" onclick="switchAdminTab('gallery')"
+              class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 text-mute hover:text-white hover:bg-surface transition-all">
+        <i class="fa-solid fa-images"></i>
+        <span>Trabajos Publicados</span>
+        <span class="rounded-full bg-surfaceCard px-2 py-0.5 text-xs text-mute font-mono border border-line">
+          {{ diseno_projects|length + web_projects|length }}
+        </span>
+      </button>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- SECCIÓN 1: FORMULARIO DE SUBIDA (TAB UPLOAD)                              -->
+    <!-- ========================================================================= -->
+    <section id="admin-view-upload" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Columna Izquierda: Formulario -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="glass-panel rounded-2xl p-6 sm:p-8">
+          <div class="flex items-center justify-between pb-5 border-b border-line/80 mb-6">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-circle-plus text-sky"></i>
+              <span>Ficha del Proyecto / Trabajo</span>
+            </h2>
+            <span class="text-xs text-mute font-medium">Todos los campos se sincronizan</span>
+          </div>
+
+          <form action="/admin/upload" method="POST" enctype="multipart/form-data" id="uploadForm" class="space-y-6">
+            
+            <!-- 1. Selección de Catálogo Principal -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2.5">
+                1. ¿A qué catálogo pertenece este trabajo?
+              </label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="relative flex items-center gap-3 p-3.5 rounded-xl border border-sky/40 bg-sky/5 cursor-pointer hover:bg-sky/10 transition-colors catalog-type-option" id="type-opt-diseno">
+                  <input type="radio" name="catalog_type" value="diseno" checked onchange="handleCatalogTypeChange('diseno')" class="text-sky focus:ring-sky h-4 w-4">
+                  <div class="flex-1">
+                    <span class="block text-sm font-bold text-white flex items-center gap-1.5">
+                      <i class="fa-solid fa-pen-nib text-sky"></i> Diseño Gráfico
+                    </span>
+                    <span class="block text-xs text-mute mt-0.5">Logos, Flyers, Empaques, Tarjetas</span>
+                  </div>
+                </label>
+
+                <label class="relative flex items-center gap-3 p-3.5 rounded-xl border border-line bg-surface cursor-pointer hover:bg-white/[0.04] transition-colors catalog-type-option" id="type-opt-web">
+                  <input type="radio" name="catalog_type" value="web" onchange="handleCatalogTypeChange('web')" class="text-cyan focus:ring-cyan h-4 w-4">
+                  <div class="flex-1">
+                    <span class="block text-sm font-bold text-white flex items-center gap-1.5">
+                      <i class="fa-solid fa-code text-cyan"></i> Desarrollo Web
+                    </span>
+                    <span class="block text-xs text-mute mt-0.5">Landing Pages, E-commerce, Sitios Web</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. Categoría -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label for="categorySelect" class="text-xs font-semibold uppercase tracking-wider text-mute">
+                  2. Categoría del trabajo <span class="text-rose-400">*</span>
+                </label>
+                <button type="button" onclick="toggleCustomCategory()" class="text-xs text-sky hover:underline flex items-center gap-1">
+                  <i class="fa-solid fa-plus-circle text-[11px]"></i> <span id="toggleCatText">Escribir otra categoría</span>
+                </button>
+              </div>
+
+              <!-- Selector de categorías existentes / sugeridas -->
+              <div id="selectCategoryWrapper">
+                <select id="categorySelect" name="category" class="w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-paper focus:border-sky focus:outline-none focus:ring-1 focus:ring-sky">
+                  <!-- Se llena dinámicamente según el tipo elegido -->
+                </select>
+              </div>
+
+              <!-- Input para categoría personalizada -->
+              <div id="customCategoryWrapper" class="hidden mt-2">
+                <input type="text" id="customCategoryInput" name="custom_category" placeholder="Escribe el nombre de la nueva categoría..."
+                       class="w-full rounded-xl border border-cyan/50 bg-surface px-4 py-3 text-sm text-paper focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan">
+                <p class="text-[11px] text-mute mt-1">Se creará automáticamente la carpeta en static y la categoría en el filtro del catálogo.</p>
+              </div>
+            </div>
+
+            <!-- 3. Título / Nombre del Proyecto -->
+            <div>
+              <label for="projectName" class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2">
+                3. Nombre del Trabajo o Cliente <span class="text-rose-400">*</span>
+              </label>
+              <input type="text" id="projectName" name="name" required placeholder="Ej: Trattoria Da Lucy / Identidad Gastronómica"
+                     class="w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-paper focus:border-sky focus:outline-none focus:ring-1 focus:ring-sky">
+            </div>
+
+            <!-- 4. Zona de Carga de Foto (Drag & Drop) -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2">
+                4. Foto o Imagen del Proyecto <span class="text-rose-400">*</span>
+              </label>
+              
+              <div id="dropzone" class="dropzone rounded-2xl p-6 text-center cursor-pointer bg-surface/50 hover:bg-surface/80">
+                <input type="file" id="imageInput" name="image" accept="image/*" required class="hidden">
+                <div id="dropzonePrompt" class="space-y-3">
+                  <div class="h-12 w-12 rounded-full bg-sky/15 text-sky flex items-center justify-center mx-auto border border-sky/30">
+                    <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-white">Haz clic aquí o arrastra la foto del proyecto</p>
+                    <p class="text-xs text-mute mt-1">Formatos soportados: JPG, PNG, WEBP, SVG o GIF (Alta resolución recomendada)</p>
+                  </div>
+                  <span class="inline-block rounded-lg bg-surfaceCard border border-line px-3 py-1.5 text-xs text-sky font-medium">
+                    Explorar archivos del equipo
+                  </span>
+                </div>
+
+                <!-- Info del archivo cargado (oculto hasta seleccionar) -->
+                <div id="dropzoneFileInfo" class="hidden flex items-center justify-between gap-3 text-left p-2 rounded-xl bg-surfaceCard border border-line">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <div class="h-10 w-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                      <i class="fa-solid fa-image"></i>
+                    </div>
+                    <div class="truncate">
+                      <p id="fileInfoName" class="text-xs font-bold text-white truncate">foto.jpg</p>
+                      <p id="fileInfoSize" class="text-[11px] text-mute">0 KB</p>
+                    </div>
+                  </div>
+                  <button type="button" onclick="clearSelectedFile(event)" class="text-mute hover:text-rose-400 px-2 py-1 text-xs">
+                    <i class="fa-solid fa-trash-can"></i> Cambiar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Ficha Técnica / Descripción -->
+            <div>
+              <label for="projectSpecs" class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2">
+                5. Descripción &amp; Detalles Técnicos (Opcional)
+              </label>
+              <textarea id="projectSpecs" name="specs" rows="3" placeholder="Ej: Diseño de logotipo principal, paleta cromática, manual de marca y artes finales vectoriales listos para imprenta..."
+                        class="w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-paper focus:border-sky focus:outline-none focus:ring-1 focus:ring-sky"></textarea>
+            </div>
+
+            <!-- 6. Herramientas y Datos Complementarios -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="projectTools" class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2">
+                  Herramientas / Stack
+                </label>
+                <input type="text" id="projectTools" name="tools" placeholder="Ej: Illustrator, Photoshop, Figma"
+                       class="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-paper focus:border-sky focus:outline-none focus:ring-1 focus:ring-sky">
+              </div>
+
+              <div>
+                <label for="projectPrice" class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2">
+                  Precio / Modalidad
+                </label>
+                <input type="text" id="projectPrice" name="price" value="Cotizar" placeholder="Cotizar / $150 / Cotizar a medida"
+                       class="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-paper focus:border-sky focus:outline-none focus:ring-1 focus:ring-sky">
+              </div>
+
+              <div class="sm:col-span-2" id="demoUrlWrapper">
+                <label for="projectDemoUrl" class="block text-xs font-semibold uppercase tracking-wider text-mute mb-2">
+                  Enlace Demo o Sitio en Vivo (Opcional para web)
+                </label>
+                <input type="url" id="projectDemoUrl" name="demo_url" placeholder="https://ejemplo.com"
+                       class="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-paper focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan">
+              </div>
+            </div>
+
+            <!-- Botón de Envío -->
+            <div class="pt-4 border-t border-line/80 flex items-center justify-between">
+              <span class="text-xs text-mute flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-sky"></i> Publicación inmediata sin reiniciar servidor
+              </span>
+
+              <button type="submit" id="submitBtn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-brand to-cyan hover:from-brand-dark hover:to-cyan/80 text-white font-bold text-sm shadow-xl shadow-brand/25 hover:shadow-cyan/30 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Guardar y Publicar Trabajo</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Vista Previa en Vivo (Live Card Mockup) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="sticky top-24">
+          <div class="glass-panel rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-line/70">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-eye text-cyan"></i>
+                <span>Vista Previa de la Tarjeta</span>
+              </h3>
+              <span class="text-[11px] rounded-full bg-surfaceCard px-2 py-0.5 text-mute border border-line font-mono">
+                En tiempo real
+              </span>
+            </div>
+
+            <p class="text-xs text-mute mb-4">
+              Así es como se verá tu trabajo en la cuadrícula de los catálogos y en la selección aleatoria del inicio:
+            </p>
+
+            <!-- Card Mockup Preview -->
+            <div id="cardPreview" class="rounded-2xl border border-sky/40 bg-surface/90 p-4 shadow-2xl transition-all">
+              
+              <!-- Imagen Thumbnail -->
+              <div class="relative w-full rounded-xl overflow-hidden bg-surfaceCard border border-line mb-3.5" style="aspect-ratio: 16/10;">
+                <img id="livePreviewImg" src="" alt="Vista previa" class="w-full h-full object-cover hidden">
+                <div id="livePreviewPlaceholder" class="w-full h-full flex flex-col items-center justify-center p-4 text-center text-mute bg-gradient-to-br from-surface to-surfaceCard">
+                  <i class="fa-solid fa-image text-3xl mb-2 text-mute/50"></i>
+                  <span class="text-xs">Selecciona una imagen para previsualizar</span>
+                </div>
+
+                <span id="livePreviewBadge" class="absolute top-2.5 left-2.5 rounded-full border border-white/20 bg-ink/80 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky backdrop-blur-md">
+                  Logotipos
+                </span>
+              </div>
+
+              <!-- Metadatos de la Card -->
+              <p id="livePreviewCatText" class="text-xs font-semibold text-sky mb-1">Logos &amp; Identidad</p>
+              <h4 id="livePreviewTitle" class="text-base font-bold text-white line-clamp-1 mb-1.5">
+                Nombre del Proyecto
+              </h4>
+              <p id="livePreviewSpecs" class="text-xs text-mute line-clamp-2 leading-relaxed mb-3">
+                Descripción técnica del proyecto y características del trabajo entregado.
+              </p>
+
+              <!-- Footer de la Card -->
+              <div class="flex items-center justify-between pt-2.5 border-t border-line/60 text-xs">
+                <div id="livePreviewTools" class="flex flex-wrap gap-1">
+                  <span class="rounded-full border border-line bg-surfaceCard px-2 py-0.5 text-[10px] text-slate-300">Illustrator</span>
+                  <span class="rounded-full border border-line bg-surfaceCard px-2 py-0.5 text-[10px] text-slate-300">Photoshop</span>
+                </div>
+                <span id="livePreviewPrice" class="font-bold text-sky text-xs">Cotizar</span>
+              </div>
+            </div>
+
+            <!-- Caja Informativa -->
+            <div class="mt-6 rounded-xl border border-line/70 bg-surfaceCard/60 p-4 text-xs text-mute space-y-2">
+              <div class="font-bold text-paper flex items-center gap-1.5">
+                <i class="fa-solid fa-shuffle text-cyan"></i> Rotación Aleatoria en el Index:
+              </div>
+              <p>
+                Cada vez que un cliente o visitante abre el <a href="/" target="_blank" class="text-sky hover:underline">Index principal</a>, el sistema selecciona automáticamente de manera aleatoria <strong>10 trabajos de diseño</strong> y <strong>10 trabajos de desarrollo web</strong>, rotando siempre tu mejor contenido sin que tengas que editar código.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECCIÓN 2: TRABAJOS PUBLICADOS (TAB GALLERY / GESTIÓN)                    -->
+    <!-- ========================================================================= -->
+    <section id="admin-view-gallery" class="hidden space-y-6">
+      
+      <!-- Barra de Filtros y Búsqueda -->
+      <div class="glass-panel rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto">
+          <button type="button" onclick="filterGallery('all', this)" class="gallery-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-brand text-white transition-colors">
+            Todos ({{ diseno_projects|length + web_projects|length }})
+          </button>
+          <button type="button" onclick="filterGallery('diseno', this)" class="gallery-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-colors">
+            <i class="fa-solid fa-pen-nib text-sky mr-1"></i> Diseño ({{ diseno_projects|length }})
+          </button>
+          <button type="button" onclick="filterGallery('web', this)" class="gallery-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-colors">
+            <i class="fa-solid fa-code text-cyan mr-1"></i> Web ({{ web_projects|length }})
+          </button>
+        </div>
+
+        <div class="relative w-full sm:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-mute"></i>
+          <input type="text" id="gallerySearchInput" oninput="searchGallery(this.value)" placeholder="Buscar por título o categoría..."
+                 class="w-full rounded-xl border border-line bg-surface pl-9 pr-4 py-2 text-xs text-paper focus:border-sky focus:outline-none focus:ring-1 focus:ring-sky">
+        </div>
+      </div>
+
+      <!-- Cuadrícula de Proyectos en static -->
+      <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        
+        <!-- Renderizar Trabajos de Diseño -->
+        {% for p in diseno_projects %}
+        <div class="gallery-item rounded-2xl border border-line bg-surface/80 p-3.5 flex flex-col justify-between group hover:border-sky/50 transition-all"
+             data-type="diseno"
+             data-name="{{ p.name | lower }}"
+             data-category="{{ p.category | lower }}">
+          
+          <div>
+            <div class="relative w-full rounded-xl overflow-hidden bg-surfaceCard border border-line mb-3" style="aspect-ratio: 16/10;">
+              {% if p.image_src %}
+                <img src="{{ p.image_src }}" alt="{{ p.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center text-3xl font-black text-white/50 bg-surfaceCard">
+                  {{ p.icon or 'Aa' }}
+                </div>
+              {% endif %}
+              
+              <span class="absolute top-2 left-2 rounded-full border border-sky/40 bg-ink/80 px-2 py-0.5 text-[10px] font-semibold text-sky backdrop-blur-md">
+                {{ p.category }}
+              </span>
+
+              <span class="absolute top-2 right-2 rounded-full border border-line bg-ink/80 px-2 py-0.5 text-[9px] font-semibold text-mute backdrop-blur-md">
+                DISEÑO
+              </span>
+            </div>
+
+            <h4 class="text-sm font-bold text-white line-clamp-1 mb-1">{{ p.name }}</h4>
+            <p class="text-xs text-mute line-clamp-2 leading-relaxed mb-3">{{ p.tech_specs }}</p>
+          </div>
+
+          <div class="pt-2.5 border-t border-line/60 flex items-center justify-between text-xs">
+            <span class="text-[11px] text-sky font-semibold">{{ p.price or 'Cotizar' }}</span>
+            
+            <div class="flex items-center gap-1.5">
+              {% if p.image_src %}
+              <a href="{{ p.image_src }}" target="_blank" class="p-1.5 rounded-lg border border-line bg-surfaceCard text-mute hover:text-white transition-colors" title="Ver imagen original">
+                <i class="fa-solid fa-up-right-from-square text-[10px]"></i>
+              </a>
+              {% endif %}
+              
+              {% if p.rel_path %}
+              <button type="button" onclick="confirmDeleteProject('{{ p.rel_path }}', '{{ p.name }}')"
+                      class="p-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition-colors" title="Eliminar foto y metadatos">
+                <i class="fa-solid fa-trash-can text-[10px]"></i>
+              </button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- Renderizar Trabajos Web -->
+        {% for p in web_projects %}
+        <div class="gallery-item rounded-2xl border border-line bg-surface/80 p-3.5 flex flex-col justify-between group hover:border-cyan/50 transition-all"
+             data-type="web"
+             data-name="{{ p.name | lower }}"
+             data-category="{{ p.category | lower }}">
+          
+          <div>
+            <div class="relative w-full rounded-xl overflow-hidden bg-surfaceCard border border-line mb-3" style="aspect-ratio: 16/10;">
+              {% if p.image_src %}
+                <img src="{{ p.image_src }}" alt="{{ p.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center text-3xl font-black text-white/50 bg-surfaceCard">
+                  {{ p.icon or '</>' }}
+                </div>
+              {% endif %}
+              
+              <span class="absolute top-2 left-2 rounded-full border border-cyan/40 bg-ink/80 px-2 py-0.5 text-[10px] font-semibold text-cyan backdrop-blur-md">
+                {{ p.category }}
+              </span>
+
+              <span class="absolute top-2 right-2 rounded-full border border-line bg-ink/80 px-2 py-0.5 text-[9px] font-semibold text-mute backdrop-blur-md">
+                WEB
+              </span>
+            </div>
+
+            <h4 class="text-sm font-bold text-white line-clamp-1 mb-1">{{ p.name }}</h4>
+            <p class="text-xs text-mute line-clamp-2 leading-relaxed mb-3">{{ p.tech_specs }}</p>
+          </div>
+
+          <div class="pt-2.5 border-t border-line/60 flex items-center justify-between text-xs">
+            <span class="text-[11px] text-cyan font-semibold">{{ p.price or 'Cotizar' }}</span>
+            
+            <div class="flex items-center gap-1.5">
+              {% if p.image_src %}
+              <a href="{{ p.image_src }}" target="_blank" class="p-1.5 rounded-lg border border-line bg-surfaceCard text-mute hover:text-white transition-colors" title="Ver imagen original">
+                <i class="fa-solid fa-up-right-from-square text-[10px]"></i>
+              </a>
+              {% endif %}
+
+              {% if p.demo_url %}
+              <a href="{{ p.demo_url }}" target="_blank" class="p-1.5 rounded-lg border border-cyan/30 bg-cyan/10 text-cyan hover:bg-cyan/20 transition-colors" title="Abrir Demo">
+                <i class="fa-solid fa-globe text-[10px]"></i>
+              </a>
+              {% endif %}
+              
+              {% if p.rel_path %}
+              <button type="button" onclick="confirmDeleteProject('{{ p.rel_path }}', '{{ p.name }}')"
+                      class="p-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition-colors" title="Eliminar foto y metadatos">
+                <i class="fa-solid fa-trash-can text-[10px]"></i>
+              </button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <!-- Estado vacío si no hay coincidencias de búsqueda -->
+      <div id="galleryEmptyState" class="hidden text-center py-16 text-mute space-y-2">
+        <i class="fa-solid fa-folder-open text-4xl text-mute/40"></i>
+        <p class="text-base font-semibold text-white">No se encontraron trabajos con ese criterio</p>
+        <p class="text-xs">Prueba seleccionando otra categoría o borrando el término de búsqueda.</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============ MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ============ -->
+  <div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/80 backdrop-blur-md">
+    <div class="glass-panel max-w-md w-full rounded-2xl p-6 border border-rose-500/40 shadow-2xl animate-fade-in space-y-4">
+      <div class="flex items-center gap-3 text-rose-400">
+        <div class="h-10 w-10 rounded-full bg-rose-500/20 flex items-center justify-center border border-rose-500/30">
+          <i class="fa-solid fa-trash-can text-lg"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">¿Eliminar este trabajo?</h3>
+      </div>
+      
+      <p class="text-xs text-mute leading-relaxed">
+        Se eliminará permanentemente la foto <code id="deleteTargetName" class="text-white font-semibold"></code> de la carpeta <code class="text-sky">static/</code> y ya no se mostrará en los catálogos ni en el index.
+      </p>
+
+      <div class="pt-3 border-t border-line flex items-center justify-end gap-3">
+        <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 rounded-xl border border-line text-xs font-semibold text-mute hover:text-white transition-colors">
+          Cancelar
+        </button>
+        <button type="button" id="confirmDeleteBtn" onclick="executeDelete()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-colors shadow-lg shadow-rose-600/30">
+          Sí, Eliminar de Static
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-line/70 py-6 text-center text-xs text-mute bg-ink/60">
+    <div class="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>© {{ config.brand_name }} — Panel de Control Administrativo</p>
+      <div class="flex items-center gap-4">
+        <a href="/" class="hover:text-white transition-colors">Ir al Inicio</a>
+        <a href="/diseno-grafico" class="hover:text-white transition-colors">Diseño</a>
+        <a href="/desarrollo-web" class="hover:text-white transition-colors">Web</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ SCRIPTS DEL ADMIN ============ -->
+  <script>
+    // Categorías predefinidas y dinámicas
+    const disenoCategories = {{ diseno_cats | tojson }};
+    const webCategories = {{ web_cats | tojson }};
+
+    let currentCatalogType = 'diseno';
+    let targetDeletePath = '';
+
+    // Inicializar al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+      populateCategories('diseno');
+      setupDropzone();
+      setupLivePreview();
+    });
+
+    // Cambiar pestañas del admin
+    function switchAdminTab(tab) {
+      const uploadView = document.getElementById('admin-view-upload');
+      const galleryView = document.getElementById('admin-view-gallery');
+      const btnUpload = document.getElementById('tab-btn-upload');
+      const btnGallery = document.getElementById('tab-btn-gallery');
+
+      if (tab === 'upload') {
+        uploadView.classList.remove('hidden');
+        galleryView.classList.add('hidden');
+        btnUpload.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all bg-brand text-white shadow-lg shadow-brand/30";
+        btnGallery.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 text-mute hover:text-white hover:bg-surface transition-all";
+      } else {
+        uploadView.classList.add('hidden');
+        galleryView.classList.remove('hidden');
+        btnGallery.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all bg-brand text-white shadow-lg shadow-brand/30";
+        btnUpload.className = "admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 text-mute hover:text-white hover:bg-surface transition-all";
+      }
+    }
+
+    // Cambiar tipo de catálogo en el formulario
+    function handleCatalogTypeChange(type) {
+      currentCatalogType = type;
+      populateCategories(type);
+
+      // Estilizar radios
+      const optDiseno = document.getElementById('type-opt-diseno');
+      const optWeb = document.getElementById('type-opt-web');
+      const demoUrlWrapper = document.getElementById('demoUrlWrapper');
+      const previewBadge = document.getElementById('livePreviewBadge');
+      const previewCatText = document.getElementById('livePreviewCatText');
+      const previewPrice = document.getElementById('livePreviewPrice');
+      const cardPreview = document.getElementById('cardPreview');
+
+      if (type === 'diseno') {
+        optDiseno.className = "relative flex items-center gap-3 p-3.5 rounded-xl border border-sky/40 bg-sky/5 cursor-pointer hover:bg-sky/10 transition-colors catalog-type-option";
+        optWeb.className = "relative flex items-center gap-3 p-3.5 rounded-xl border border-line bg-surface cursor-pointer hover:bg-white/[0.04] transition-colors catalog-type-option";
+        cardPreview.className = "rounded-2xl border border-sky/40 bg-surface/90 p-4 shadow-2xl transition-all";
+        previewBadge.className = "absolute top-2.5 left-2.5 rounded-full border border-sky/40 bg-ink/80 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky backdrop-blur-md";
+        previewCatText.className = "text-xs font-semibold text-sky mb-1";
+        previewPrice.className = "font-bold text-sky text-xs";
+      } else {
+        optWeb.className = "relative flex items-center gap-3 p-3.5 rounded-xl border border-cyan/40 bg-cyan/5 cursor-pointer hover:bg-cyan/10 transition-colors catalog-type-option";
+        optDiseno.className = "relative flex items-center gap-3 p-3.5 rounded-xl border border-line bg-surface cursor-pointer hover:bg-white/[0.04] transition-colors catalog-type-option";
+        cardPreview.className = "rounded-2xl border border-cyan/40 bg-surface/90 p-4 shadow-2xl transition-all";
+        previewBadge.className = "absolute top-2.5 left-2.5 rounded-full border border-cyan/40 bg-ink/80 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cyan backdrop-blur-md";
+        previewCatText.className = "text-xs font-semibold text-cyan mb-1";
+        previewPrice.className = "font-bold text-cyan text-xs";
+      }
+
+      updateLivePreview();
+    }
+
+    // Llenar dropdown de categorías según el catálogo
+    function populateCategories(type) {
+      const select = document.getElementById('categorySelect');
+      select.innerHTML = '';
+      
+      const cats = (type === 'diseno') ? disenoCategories : webCategories;
+      
+      // Categorías por defecto si la lista está vacía
+      const fallbackCats = (type === 'diseno') 
+        ? ['Logotipos', 'Flyers & Afiches', 'Tarjetas de Presentación', 'Empaques & Packaging', 'Redes Sociales', 'Identidad de Marca']
+        : ['Landing Pages', 'E-Commerce', 'Sitios Corporativos', 'Plataformas Web', 'SaaS & Dashboards', 'Wordpress'];
+
+      const merged = Array.from(new Set([...cats, ...fallbackCats])).sort();
+
+      merged.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        select.appendChild(opt);
+      });
+
+      updateLivePreview();
+    }
+
+    // Alternar entre categoría predefinida y personalizada
+    function toggleCustomCategory() {
+      const customWrapper = document.getElementById('customCategoryWrapper');
+      const selectWrapper = document.getElementById('selectCategoryWrapper');
+      const toggleText = document.getElementById('toggleCatText');
+      const customInput = document.getElementById('customCategoryInput');
+
+      if (customWrapper.classList.contains('hidden')) {
+        customWrapper.classList.remove('hidden');
+        selectWrapper.classList.add('hidden');
+        toggleText.textContent = "Elegir de la lista";
+        customInput.focus();
+      } else {
+        customWrapper.classList.add('hidden');
+        selectWrapper.classList.remove('hidden');
+        toggleText.textContent = "Escribir otra categoría";
+        customInput.value = "";
+      }
+      updateLivePreview();
+    }
+
+    // Configuración del Drag & Drop de archivo
+    function setupDropzone() {
+      const dropzone = document.getElementById('dropzone');
+      const fileInput = document.getElementById('imageInput');
+
+      dropzone.addEventListener('click', (e) => {
+        if (!e.target.closest('#dropzoneFileInfo button')) {
+          fileInput.click();
+        }
+      });
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+        });
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        if (files && files.length > 0) {
+          fileInput.files = files;
+          handleFileSelected(files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files && fileInput.files.length > 0) {
+          handleFileSelected(fileInput.files[0]);
+        }
+      });
+    }
+
+    // Procesar archivo seleccionado y mostrar preview
+    function handleFileSelected(file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona un archivo de imagen válido (JPG, PNG, WEBP, SVG).');
+        return;
+      }
+
+      document.getElementById('dropzonePrompt').classList.add('hidden');
+      const fileInfo = document.getElementById('dropzoneFileInfo');
+      fileInfo.classList.remove('hidden');
+      
+      document.getElementById('fileInfoName').textContent = file.name;
+      document.getElementById('fileInfoSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+      // Live Image Preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.getElementById('livePreviewImg');
+        const placeholder = document.getElementById('livePreviewPlaceholder');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearSelectedFile(e) {
+      if (e) e.stopPropagation();
+      const fileInput = document.getElementById('imageInput');
+      fileInput.value = '';
+      
+      document.getElementById('dropzoneFileInfo').classList.add('hidden');
+      document.getElementById('dropzonePrompt').classList.remove('hidden');
+
+      const img = document.getElementById('livePreviewImg');
+      const placeholder = document.getElementById('livePreviewPlaceholder');
+      img.src = '';
+      img.classList.add('hidden');
+      placeholder.classList.remove('hidden');
+    }
+
+    // Sincronizar inputs en vivo con el mockup
+    function setupLivePreview() {
+      const inputs = ['projectName', 'projectSpecs', 'projectTools', 'projectPrice', 'categorySelect', 'customCategoryInput'];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', updateLivePreview);
+          el.addEventListener('change', updateLivePreview);
+        }
+      });
+    }
+
+    function updateLivePreview() {
+      const name = document.getElementById('projectName').value.trim() || 'Nombre del Proyecto';
+      const specs = document.getElementById('projectSpecs').value.trim() || 'Descripción técnica del proyecto y características del trabajo entregado.';
+      const price = document.getElementById('projectPrice').value.trim() || 'Cotizar';
+      const tools = document.getElementById('projectTools').value.trim();
+
+      const customCat = document.getElementById('customCategoryInput').value.trim();
+      const selectCat = document.getElementById('categorySelect').value;
+      const category = customCat || selectCat || (currentCatalogType === 'diseno' ? 'Logotipos' : 'Landing Pages');
+
+      document.getElementById('livePreviewTitle').textContent = name;
+      document.getElementById('livePreviewSpecs').textContent = specs;
+      document.getElementById('livePreviewPrice').textContent = price;
+      document.getElementById('livePreviewBadge').textContent = category;
+      document.getElementById('livePreviewCatText').textContent = category;
+
+      const toolsContainer = document.getElementById('livePreviewTools');
+      toolsContainer.innerHTML = '';
+      if (tools) {
+        tools.split(',').forEach(t => {
+          const cleanT = t.trim();
+          if (cleanT) {
+            const span = document.createElement('span');
+            span.className = "rounded-full border border-line bg-surfaceCard px-2 py-0.5 text-[10px] text-slate-300";
+            span.textContent = cleanT;
+            toolsContainer.appendChild(span);
+          }
+        });
+      } else {
+        const defTools = (currentCatalogType === 'diseno') ? ['Illustrator', 'Photoshop'] : ['HTML5', 'Tailwind'];
+        defTools.forEach(t => {
+          const span = document.createElement('span');
+          span.className = "rounded-full border border-line bg-surfaceCard px-2 py-0.5 text-[10px] text-slate-300";
+          span.textContent = t;
+          toolsContainer.appendChild(span);
+        });
+      }
+    }
+
+    // Filtrar la galería de trabajos publicados
+    function filterGallery(type, btn) {
+      document.querySelectorAll('.gallery-filter-btn').forEach(b => {
+        b.className = "gallery-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-colors";
+      });
+      btn.className = "gallery-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-brand text-white transition-colors";
+
+      const items = document.querySelectorAll('.gallery-item');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const itemType = item.getAttribute('data-type');
+        if (type === 'all' || itemType === type) {
+          item.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      const empty = document.getElementById('galleryEmptyState');
+      if (visibleCount === 0) empty.classList.remove('hidden');
+      else empty.classList.add('hidden');
+    }
+
+    // Búsqueda en vivo dentro de la galería
+    function searchGallery(query) {
+      const cleanQ = query.toLowerCase().trim();
+      const items = document.querySelectorAll('.gallery-item');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const cat = item.getAttribute('data-category') || '';
+        
+        if (!cleanQ || name.includes(cleanQ) || cat.includes(cleanQ)) {
+          item.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      const empty = document.getElementById('galleryEmptyState');
+      if (visibleCount === 0) empty.classList.remove('hidden');
+      else empty.classList.add('hidden');
+    }
+
+    // Modal de confirmación de eliminación
+    function confirmDeleteProject(relPath, name) {
+      targetDeletePath = relPath;
+      document.getElementById('deleteTargetName').textContent = name || relPath;
+      document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      targetDeletePath = '';
+      document.getElementById('deleteModal').classList.add('hidden');
+    }
+
+    function executeDelete() {
+      if (!targetDeletePath) return;
+
+      const btn = document.getElementById('confirmDeleteBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Eliminando...';
+
+      const formData = new FormData();
+      formData.append('rel_path', targetDeletePath);
+
+      fetch('/admin/delete', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.disabled = false;
+        btn.innerHTML = 'Sí, Eliminar de Static';
+        closeDeleteModal();
+        if (data.success) {
+          // Recargar para refrescar conteos y vistas
+          window.location.reload();
+        } else {
+          alert('Error al eliminar: ' + (data.error || 'Desconocido'));
+        }
+      })
+      .catch(err => {
+        btn.disabled = false;
+        btn.innerHTML = 'Sí, Eliminar de Static';
+        closeDeleteModal();
+        alert('Error de conexión al eliminar: ' + err);
+      });
+    }
+  </script>
+</body>
+</html>

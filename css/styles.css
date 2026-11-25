@@ -1,0 +1,222 @@
+/* ============================================================
+   Konnyx — estilos base y componentes
+   Paleta tomada de konnyx.com: azul marino + azul real + cian + verde WhatsApp
+   (Tailwind por CDN aporta las utilidades; aquí van los componentes)
+   ============================================================ */
+
+:root {
+  --ink: #020617;      /* fondo más profundo */
+  --surface: #0f172a;  /* fondo principal de secciones */
+  --line: #1e293b;
+  --paper: #f8fafc;
+  --mute: #94a3b8;
+  --brand: #2563eb;    /* azul de marca */
+  --brand-dark: #1d4ed8;
+  --sky: #60a5fa;
+  --ice: #93c5fd;
+  --cyan: #22d3ee;
+  --wa: #25d366;
+
+  --grad-brand: linear-gradient(135deg, #2563eb 0%, #22d3ee 100%);
+  --grad-text: linear-gradient(90deg, #60a5fa 0%, #22d3ee 100%);
+}
+
+html { scroll-padding-top: 5rem; }
+body {
+  background:
+    radial-gradient(60rem 30rem at 85% -5%, rgba(37, 99, 235, .18), transparent 60%),
+    var(--ink);
+  background-attachment: fixed;
+  color: var(--paper);
+  overflow-x: clip;
+  font-family: "Inter", system-ui, sans-serif;
+}
+::selection { background: var(--brand); color: #fff; }
+
+/* Accesibilidad: foco visible */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 100;
+  background: var(--brand); color: #fff;
+  padding: .6rem 1rem; border-radius: 999px; font-weight: 600;
+  transition: top .2s;
+}
+.skip-link:focus { top: 1rem; }
+
+/* Ruido sutil */
+.grain {
+  position: absolute; inset: 0; z-index: -1; opacity: .05; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Texto con degradado de marca (azul → cian) */
+.grad-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* Navegación */
+.nav-link { position: relative; padding: .25rem 0; transition: color .2s; }
+.nav-link:hover, .nav-link[aria-current="true"] { color: var(--paper); }
+.nav-link::after {
+  content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 100%;
+  background: var(--grad-brand); transform: scaleX(0); transform-origin: left; transition: transform .3s;
+}
+.nav-link:hover::after, .nav-link[aria-current="true"]::after { transform: scaleX(1); }
+.mobile-link { display: block; padding: .75rem 0; border-bottom: 1px solid var(--line); }
+
+/* Botones */
+.btn-primary, .btn-pillar, .btn-ghost, .btn-whatsapp {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border-radius: 999px; padding: .75rem 1.5rem; font-weight: 700; font-size: .95rem;
+  transition: transform .2s, box-shadow .2s, background .2s, border-color .2s;
+  cursor: pointer;
+}
+.btn-primary, .btn-blue {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff;
+  box-shadow: 0 8px 28px -8px rgba(37, 99, 235, .7);
+}
+.btn-primary:hover, .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 12px 34px -8px rgba(37, 99, 235, .9); }
+.btn-cyan {
+  background: linear-gradient(135deg, #22d3ee, #2563eb); color: #fff;
+  box-shadow: 0 8px 28px -8px rgba(34, 211, 238, .55);
+}
+.btn-cyan:hover { transform: translateY(-2px); box-shadow: 0 12px 34px -8px rgba(34, 211, 238, .8); }
+.btn-ghost { border: 1px solid rgba(148, 163, 184, .3); color: var(--paper); background: rgba(255, 255, 255, .03); }
+.btn-ghost:hover { border-color: var(--ice); transform: translateY(-2px); }
+.btn-whatsapp { background: var(--wa); color: #04210f; box-shadow: 0 8px 28px -8px rgba(37, 211, 102, .6); }
+.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 12px 34px -8px rgba(37, 211, 102, .85); }
+
+/* Tipografía de sección */
+.eyebrow { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .22em; color: var(--cyan); margin-bottom: 1rem; }
+.section-title {
+  font-family: "Inter", system-ui, sans-serif; font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.75rem); line-height: 1.05; letter-spacing: -0.03em;
+}
+h1, h2, h3, .font-display { letter-spacing: -0.03em; }
+
+/* ============ Pilares: GLASSMORPHISM ============
+   El efecto se ve gracias a los resplandores (.glow) que hay detrás. */
+.glow { position: absolute; z-index: -1; border-radius: 999px; pointer-events: none; }
+
+.pillar {
+  --accent: var(--sky);
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  padding: 2rem; border-radius: 1.75rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .10) 0%, rgba(255, 255, 255, .03) 55%, rgba(255, 255, 255, .06) 100%);
+  border: 1px solid rgba(255, 255, 255, .14);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  box-shadow:
+    0 24px 60px -20px rgba(2, 6, 23, .8),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 0 0 1px rgba(255, 255, 255, .03);
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+}
+@media (min-width: 768px) { .pillar { padding: 2.75rem; } }
+/* Brillo especular que recorre el cristal */
+.pillar::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: -1;
+  background: radial-gradient(28rem 14rem at 0% 0%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 70%);
+}
+.pillar-blue { --accent: var(--brand); }
+.pillar-cyan { --accent: var(--cyan); }
+.pillar:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent) 65%, white 10%);
+  box-shadow:
+    0 30px 70px -20px rgba(2, 6, 23, .9),
+    0 0 40px -10px color-mix(in srgb, var(--accent) 55%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+/* Fallback sin backdrop-filter: fondo sólido legible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .pillar { background: rgba(15, 23, 42, .92); }
+}
+
+.pillar-num {
+  font-family: "Inter", sans-serif; font-size: 4.5rem; font-weight: 800; line-height: 1; letter-spacing: -0.05em;
+  background: linear-gradient(180deg, var(--accent), transparent 130%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.pill {
+  border: 1px solid rgba(255, 255, 255, .22); background: rgba(255, 255, 255, .06);
+  border-radius: 999px; padding: .3rem .9rem; font-size: .75rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .14em;
+}
+.pillar-label { margin: 2rem 0 .9rem; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: var(--mute); }
+.pillar-list { display: grid; gap: .65rem; }
+.pillar-list li { position: relative; padding-left: 1.4rem; color: #e2e8f0; }
+.pillar-list li::before { content: "→"; position: absolute; left: 0; color: var(--sky); }
+.tag {
+  border: 1px solid rgba(255, 255, 255, .16); background: rgba(255, 255, 255, .05);
+  border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; color: #cbd5e1;
+}
+
+/* Filtros */
+.filter-btn {
+  border: 1px solid var(--line); border-radius: 999px; padding: .5rem 1.1rem;
+  font-size: .875rem; color: var(--mute); transition: all .2s; cursor: pointer;
+}
+.filter-btn:hover { color: var(--paper); border-color: var(--ice); }
+.filter-btn[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+/* Proyectos */
+.project[hidden] { display: none; }
+.project-link { display: block; }
+.project h3 { font-size: 1.25rem; font-weight: 700; margin: .35rem 0 .4rem; }
+.project p:last-child { color: var(--mute); font-size: .95rem; }
+.project-cat { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; margin-top: 1.1rem; }
+.thumb {
+  display: grid; place-items: center; aspect-ratio: 3 / 4; overflow: hidden;
+  border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, .1);
+  font-size: 4rem; font-weight: 800; color: rgba(255, 255, 255, .92);
+  transition: transform .4s;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.project-link:hover .thumb { transform: scale(1.02); }
+.thumb-1 { background: linear-gradient(135deg, #2563eb, #0f172a); }
+.thumb-2 { background: linear-gradient(135deg, #22d3ee, #2563eb); }
+.thumb-3 { background: linear-gradient(135deg, #1d4ed8, #93c5fd); }
+.thumb-4 { background: linear-gradient(135deg, #0f172a, #22d3ee); }
+.thumb-5 { background: linear-gradient(135deg, #60a5fa, #1e1b4b); }
+.thumb-6 { background: linear-gradient(135deg, #2563eb, #22d3ee 70%, #0f172a); }
+
+/* Proceso */
+.step { display: grid; grid-template-columns: 40px 1fr; gap: 1.25rem; align-items: start; }
+@media (min-width: 768px) { .step { grid-template-columns: 48px 1fr; gap: 2rem; } }
+.step-num {
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px;
+  background: var(--ink); border: 1px solid var(--brand); color: var(--ice);
+  font-weight: 800; position: relative; z-index: 1;
+  box-shadow: 0 0 0 4px var(--ink), 0 0 20px -4px rgba(37, 99, 235, .6);
+}
+@media (min-width: 768px) { .step-num { width: 48px; height: 48px; } }
+.step h3 { font-size: 1.5rem; font-weight: 700; }
+.step p { margin-top: .4rem; max-width: 40rem; color: var(--mute); }
+[data-progress] { background: var(--grad-brand); }
+
+/* Contacto */
+.contact-link { display: inline-block; border-bottom: 1px solid var(--line); padding-bottom: .2rem; transition: color .2s, border-color .2s; }
+.contact-link:hover { color: var(--cyan); border-color: var(--cyan); }
+.label { display: block; margin-bottom: .4rem; font-size: .85rem; color: var(--mute); }
+.field {
+  width: 100%; border: 1px solid var(--line); border-radius: .9rem;
+  background: rgba(2, 6, 23, .7); color: var(--paper); padding: .8rem 1rem; font: inherit;
+  transition: border-color .2s, box-shadow .2s;
+}
+.field:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(37, 99, 235, .35); }
+.field[aria-invalid="true"] { border-color: #f87171; }
+
+/* Movimiento reducido: sin animaciones ni scroll suave */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  .pillar:hover { transform: none; }
+}
