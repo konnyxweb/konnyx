@@ -12,6 +12,26 @@
     email: 'hola@konnyx.com'
   };
 
+  /* ---------- Utilidad inteligente para WhatsApp (Web en PC / App en Móvil) ---------- */
+  function getWhatsAppUrl(text) {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    var baseUrl = isMobile ? 'https://api.whatsapp.com/send' : 'https://web.whatsapp.com/send';
+    return baseUrl + '?phone=' + CONFIG.whatsappNumber + '&text=' + encodeURIComponent(text);
+  }
+
+  function openWhatsApp(text) {
+    var url = getWhatsAppUrl(text);
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      if (a.parentNode) a.parentNode.removeChild(a);
+    }, 200);
+  }
+
   /* ---------- Año del footer ---------- */
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -19,7 +39,11 @@
   /* ---------- Enlaces directos de contacto ---------- */
   var waLink = document.getElementById('link-whatsapp');
   var mailLink = document.getElementById('link-email');
-  if (waLink) waLink.href = 'https://wa.me/' + CONFIG.whatsappNumber;
+  if (waLink) {
+    waLink.href = getWhatsAppUrl('Hola Konnyx, vengo de su sitio web y me gustaría cotizar un proyecto.');
+    waLink.target = '_blank';
+    waLink.rel = 'noopener noreferrer';
+  }
   if (mailLink) {
     mailLink.href = 'mailto:' + CONFIG.email;
     mailLink.textContent = CONFIG.email;
@@ -168,9 +192,8 @@
         '💼 *Servicio de interés:* ' + servicio + '\n\n' +
         '📝 *Detalles del proyecto:*\n' + mensaje;
 
-      if (statusEl) statusEl.textContent = 'Abriendo WhatsApp con tu mensaje listo para enviar…';
-      var waUrl = 'https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(body);
-      window.open(waUrl, '_blank', 'noopener');
+      if (statusEl) statusEl.textContent = 'Abriendo WhatsApp con tu información...';
+      openWhatsApp(body);
     });
   }
 

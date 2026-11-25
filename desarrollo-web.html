@@ -1149,8 +1149,20 @@
                  selectedList.join('\n') +
                  '\n\n¿Podrían darme información de tiempos, alcance y presupuesto?';
 
-      var url = 'https://wa.me/' + window.KONNYX_CONFIG.whatsapp_number + '?text=' + encodeURIComponent(text);
-      window.open(url, '_blank', 'noopener');
+      function getWhatsAppTargetUrl(msgText) {
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var baseWa = isMobile ? 'https://api.whatsapp.com/send' : 'https://web.whatsapp.com/send';
+        return baseWa + '?phone=' + window.KONNYX_CONFIG.whatsapp_number + '&text=' + encodeURIComponent(msgText);
+      }
+
+      var url = getWhatsAppTargetUrl(text);
+      var a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); }, 200);
     }
 
     function openModal(id) {
@@ -1201,7 +1213,11 @@
 
       if (waBtn) {
         var msg = 'Hola ' + window.KONNYX_CONFIG.brand_name + ', me interesa el proyecto web "' + proj.name + '" (' + proj.category + ') de su catálogo y quiero cotizarlo.';
-        waBtn.href = 'https://wa.me/' + window.KONNYX_CONFIG.whatsapp_number + '?text=' + encodeURIComponent(msg);
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var baseWa = isMobile ? 'https://api.whatsapp.com/send' : 'https://web.whatsapp.com/send';
+        waBtn.href = baseWa + '?phone=' + window.KONNYX_CONFIG.whatsapp_number + '&text=' + encodeURIComponent(msg);
+        waBtn.target = '_blank';
+        waBtn.rel = 'noopener noreferrer';
       }
 
       syncModalSelectButton(id);
