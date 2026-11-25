@@ -8,8 +8,8 @@
 
   /* ---------- CONFIGURACIÓN: edita estos datos ---------- */
   var CONFIG = {
-    whatsappNumber: '580000000000', // formato internacional, sin "+" ni espacios (placeholder)
-    email: 'hola@konnyx.com'        // confirma tu correo real
+    whatsappNumber: '584241925167', // WhatsApp oficial Konnyx
+    email: 'hola@konnyx.com'
   };
 
   /* ---------- Año del footer ---------- */
@@ -130,21 +130,20 @@
     });
   });
 
-  /* ---------- Formulario estático ---------- */
+  /* ---------- Formulario exclusivo directo a WhatsApp ---------- */
   var form = document.getElementById('contact-form');
   var statusEl = document.getElementById('form-status');
 
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var channel = (e.submitter && e.submitter.dataset.channel) || 'whatsapp';
       var data = new FormData(form);
       var nombre = String(data.get('nombre') || '').trim();
       var email = String(data.get('email') || '').trim();
       var servicio = String(data.get('servicio') || '');
       var mensaje = String(data.get('mensaje') || '').trim();
 
-      // Validación mínima y accesible
+      // Validación accesible
       var valid = true;
       ['nombre', 'mensaje'].forEach(function (id) {
         var el = document.getElementById(id);
@@ -163,18 +162,15 @@
       if (statusEl) statusEl.classList.replace('text-red-400', 'text-sky');
 
       var body =
-        'Hola Konnyx, soy ' + nombre + '.\n' +
-        'Me interesa: ' + servicio + '.\n\n' + mensaje +
-        (email ? '\n\nMi correo: ' + email : '');
+        '👋 *¡Hola Konnyx!* Vengo de su sitio web y deseo cotizar un proyecto:\n\n' +
+        '👤 *Nombre:* ' + nombre + '\n' +
+        (email ? '📧 *Correo de contacto:* ' + email + '\n' : '') +
+        '💼 *Servicio de interés:* ' + servicio + '\n\n' +
+        '📝 *Detalles del proyecto:*\n' + mensaje;
 
-      if (channel === 'email') {
-        var subject = encodeURIComponent('Proyecto de ' + servicio + ' — ' + nombre);
-        window.location.href = 'mailto:' + CONFIG.email + '?subject=' + subject + '&body=' + encodeURIComponent(body);
-        if (statusEl) statusEl.textContent = 'Abriendo tu app de correo…';
-      } else {
-        window.open('https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(body), '_blank', 'noopener');
-        if (statusEl) statusEl.textContent = 'Abriendo WhatsApp…';
-      }
+      if (statusEl) statusEl.textContent = 'Abriendo WhatsApp con tu mensaje listo para enviar…';
+      var waUrl = 'https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(body);
+      window.open(waUrl, '_blank', 'noopener');
     });
   }
 

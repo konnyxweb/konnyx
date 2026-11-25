@@ -35,7 +35,7 @@ CONFIG = {
     'brand_name': 'Konnyx',
     'brand_tagline': 'Marcas que se ven y sitios que rinden',
     'brand_description': 'Estudio de diseño gráfico y desarrollo web. Diseñamos identidades visuales estratégicas y construimos plataformas web de alto rendimiento y conversión.',
-    'whatsapp_number': '580000000000',  # Configura tu número internacional de WhatsApp sin '+' ni espacios
+    'whatsapp_number': '584241925167',  # WhatsApp oficial de Konnyx
     'whatsapp_message': 'Hola Konnyx, vengo de su sitio web y me gustaría cotizar un proyecto.',
     'email': 'hola@konnyx.com',
     'instagram': 'https://www.instagram.com/konnyxweb',

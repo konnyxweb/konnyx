@@ -462,8 +462,7 @@
             propuesta clara de alcance, tiempos y costo.</p>
 
           <ul class="mt-10 space-y-4 text-lg" data-gsap="contact-links">
-            <li><a class="contact-link" id="link-whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a></li>
-            <li><a class="contact-link" id="link-email" href="#">Correo</a></li>
+            <li><a class="contact-link inline-flex items-center gap-2 text-emerald-400 font-semibold" id="link-whatsapp" href="https://wa.me/{{ config.whatsapp_number }}" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp text-xl"></i> WhatsApp directo (+58 424-1925167)</a></li>
             <li><a class="contact-link" href="https://www.instagram.com/konnyxweb" target="_blank"
                 rel="noopener">Instagram · DM @konnyxweb</a></li>
             <li><a class="contact-link" href="https://www.tiktok.com/@konnyxweb" target="_blank" rel="noopener">TikTok ·
@@ -475,11 +474,11 @@
           data-gsap="form" novalidate>
           <div>
             <label for="nombre" class="label">Nombre</label>
-            <input id="nombre" name="nombre" type="text" autocomplete="name" required class="field" />
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required class="field" placeholder="Tu nombre o empresa" />
           </div>
           <div>
-            <label for="email" class="label">Correo</label>
-            <input id="email" name="email" type="email" autocomplete="email" class="field" />
+            <label for="email" class="label">Correo (Opcional)</label>
+            <input id="email" name="email" type="email" autocomplete="email" class="field" placeholder="tucorreo@ejemplo.com" />
           </div>
           <div>
             <label for="servicio" class="label">¿Qué necesitas?</label>
@@ -491,12 +490,13 @@
           </div>
           <div>
             <label for="mensaje" class="label">Cuéntame de tu proyecto</label>
-            <textarea id="mensaje" name="mensaje" rows="4" required class="field"></textarea>
+            <textarea id="mensaje" name="mensaje" rows="4" required class="field" placeholder="Describe brevemente qué deseas diseñar o desarrollar..."></textarea>
           </div>
           <p id="form-status" class="min-h-[1.25rem] text-sm text-sky" role="status" aria-live="polite"></p>
-          <div class="flex flex-wrap gap-3">
-            <button type="submit" data-channel="whatsapp" class="btn-whatsapp">Enviar por WhatsApp</button>
-            <button type="submit" data-channel="email" class="btn-ghost">Enviar por correo</button>
+          <div class="pt-2">
+            <button type="submit" class="btn-whatsapp w-full sm:w-auto justify-center font-bold text-sm py-3.5 px-6 rounded-xl shadow-lg">
+              <i class="fa-brands fa-whatsapp text-xl mr-2"></i> Enviar mensaje por WhatsApp
+            </button>
           </div>
         </form>
       </div>
