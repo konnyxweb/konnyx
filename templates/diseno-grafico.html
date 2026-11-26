@@ -173,13 +173,6 @@
 
       <!-- Botones de Acción Derecha -->
       <div class="flex items-center gap-3">
-        <button id="nav-selected-btn" onclick="openQuoteDrawer()" type="button"
-                class="relative inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-xs font-semibold text-mute hover:border-sky hover:text-white transition-all"
-                title="Ver diseños seleccionados para cotizar">
-          <i class="fa-regular fa-bookmark text-sky"></i>
-          <span class="hidden sm:inline">Cotizar lista</span>
-          <span id="nav-selected-count" class="flex h-5 w-5 items-center justify-center rounded-full bg-brand text-[11px] font-bold text-white shadow-sm">0</span>
-        </button>
         <a href="/#contacto" class="btn-primary hidden md:inline-flex">Hablemos</a>
         <button id="menu-toggle" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line md:hidden"
                 aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
@@ -300,11 +293,6 @@
             {{ cat }}
           </button>
           {% endfor %}
-
-          <button type="button" id="tab-favorites" class="filter-tab px-4 py-1.5 rounded-full text-xs font-semibold border border-line text-mute hover:text-white transition-all whitespace-nowrap"
-                  data-category="favorites" aria-pressed="false" onclick="filterCategory('favorites', this)">
-            <i class="fa-solid fa-bookmark text-sky mr-1"></i> Seleccionados (<span id="tab-selected-count">0</span>)
-          </button>
         </div>
 
         <div class="hidden lg:flex items-center gap-3">
@@ -354,14 +342,6 @@
                 <span class="absolute top-2.5 left-2.5 rounded-full border border-white/20 bg-ink/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky backdrop-blur-md">
                   {{ p.category }}
                 </span>
-
-                <!-- Botón de Bookmark / Selección rápida -->
-                <button type="button"
-                        onclick="toggleSelectProject('{{ p.id }}', event)"
-                        class="select-btn absolute top-2.5 right-2.5 flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-ink/80 text-mute hover:text-sky hover:scale-110 active:scale-95 transition-all backdrop-blur-md"
-                        title="Guardar diseño para cotizar">
-                  <i class="fa-regular fa-bookmark text-xs"></i>
-                </button>
               </div>
 
               <!-- Título y descripción -->
@@ -472,31 +452,7 @@
              class="btn-whatsapp flex-1 justify-center py-3 text-xs uppercase tracking-wider font-bold">
             <i class="fa-brands fa-whatsapp text-base"></i> Cotizar este arte por WhatsApp
           </a>
-          <button id="modal-select-btn" onclick="modalToggleSelect()" type="button"
-                  class="btn-ghost flex-1 justify-center py-3 text-xs uppercase tracking-wider font-bold">
-            <i class="fa-regular fa-bookmark"></i> <span id="modal-select-text">Agregar a mi lista</span>
-          </button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================================= -->
-  <!-- BARRA FLOTANTE DE COTIZACIÓN MÚLTIPLE -->
-  <!-- ========================================================================= -->
-  <div id="quote-drawer" class="fixed bottom-6 inset-x-4 md:inset-x-auto md:right-8 z-50 hidden transition-all duration-300">
-    <div class="flex items-center justify-between gap-4 rounded-2xl border border-sky/40 bg-surface/95 px-5 py-4 shadow-2xl backdrop-blur-xl md:gap-8">
-      <div>
-        <p class="text-xs font-bold text-sky uppercase tracking-wider">
-          <i class="fa-solid fa-layer-group mr-1.5"></i> <span id="drawer-count">1</span> diseño(s) seleccionado(s)
-        </p>
-        <p class="text-xs text-mute mt-0.5 hidden sm:block">Cotiza todos estos artes en un solo mensaje</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <button onclick="clearSelectedProjects()" class="text-xs text-mute hover:text-white px-2 py-1">Vaciar</button>
-        <button onclick="sendGroupQuoteWhatsapp()" class="btn-whatsapp py-2 px-4 text-xs font-bold uppercase tracking-wider shadow-lg shadow-wa/30">
-          <i class="fa-brands fa-whatsapp text-sm"></i> Cotizar por WhatsApp
-        </button>
       </div>
     </div>
   </div>
@@ -513,7 +469,6 @@
   <script src="/js/gsap-animations.js"></script>
 
   <script>
-    var selectedProjectIds = new Set();
     var currentCategory = 'all';
     var currentActiveModalId = null;
 
@@ -575,14 +530,7 @@
         var category = card.dataset.category || '';
         var specs = card.dataset.specs || '';
 
-        var matchesCategory = false;
-        if (currentCategory === 'all') {
-          matchesCategory = true;
-        } else if (currentCategory === 'favorites') {
-          matchesCategory = selectedProjectIds.has(id);
-        } else {
-          matchesCategory = (category === currentCategory);
-        }
+        var matchesCategory = (currentCategory === 'all') || (category === currentCategory);
 
         var matchesSearch = true;
         if (query) {
@@ -601,95 +549,6 @@
       if (noResults) noResults.classList.toggle('hidden', visibleCount > 0);
 
       if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-    }
-
-    function toggleSelectProject(id, e) {
-      if (e) e.stopPropagation();
-      if (selectedProjectIds.has(id)) {
-        selectedProjectIds.delete(id);
-      } else {
-        selectedProjectIds.add(id);
-      }
-      updateSelectionUI();
-    }
-
-    function updateSelectionUI() {
-      var count = selectedProjectIds.size;
-      var navCount = document.getElementById('nav-selected-count');
-      var tabCount = document.getElementById('tab-selected-count');
-      var drawerCount = document.getElementById('drawer-count');
-
-      if (navCount) navCount.textContent = count;
-      if (tabCount) tabCount.textContent = count;
-      if (drawerCount) drawerCount.textContent = count;
-
-      document.querySelectorAll('.catalog-card').forEach(function (card) {
-        var id = card.dataset.id;
-        var isSelected = selectedProjectIds.has(id);
-        card.classList.toggle('selected', isSelected);
-        var icon = card.querySelector('.select-btn i');
-        if (icon) {
-          if (isSelected) {
-            icon.classList.remove('fa-regular');
-            icon.classList.add('fa-solid', 'text-sky');
-          } else {
-            icon.classList.remove('fa-solid', 'text-sky');
-            icon.classList.add('fa-regular');
-          }
-        }
-      });
-
-      var drawer = document.getElementById('quote-drawer');
-      if (drawer) drawer.classList.toggle('hidden', count === 0);
-
-      if (currentActiveModalId) syncModalSelectButton(currentActiveModalId);
-    }
-
-    function openQuoteDrawer() {
-      if (selectedProjectIds.size > 0) {
-        var favTab = document.getElementById('tab-favorites');
-        if (favTab) filterCategory('favorites', favTab);
-        document.getElementById('catalogo-diseno').scrollIntoView({ behavior: 'smooth' });
-      } else {
-        alert('Aún no has seleccionado ningún diseño. Haz clic en el marcador de los artes que te interesen para cotizarlos juntos.');
-      }
-    }
-
-    function clearSelectedProjects() {
-      selectedProjectIds.clear();
-      updateSelectionUI();
-      if (currentCategory === 'favorites') {
-        var allTab = document.querySelector('[data-category="all"]');
-        if (allTab) filterCategory('all', allTab);
-      }
-    }
-
-    function sendGroupQuoteWhatsapp() {
-      if (selectedProjectIds.size === 0) return;
-      var selectedList = [];
-      selectedProjectIds.forEach(function (id) {
-        var proj = window.PROJECTS_DATA.find(function (p) { return p.id === id; });
-        if (proj) selectedList.push('• ' + proj.name + ' (' + proj.category + ')');
-      });
-
-      var text = 'Hola ' + window.KONNYX_CONFIG.brand_name + ', me interesa cotizar los siguientes trabajos de diseño gráfico de su catálogo:\n\n' +
-                 selectedList.join('\n') +
-                 '\n\n¿Podrían darme información de tiempos y costos?';
-
-      function getWhatsAppTargetUrl(msgText) {
-        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        var baseWa = isMobile ? 'https://api.whatsapp.com/send' : 'https://web.whatsapp.com/send';
-        return baseWa + '?phone=' + window.KONNYX_CONFIG.whatsapp_number + '&text=' + encodeURIComponent(msgText);
-      }
-
-      var url = getWhatsAppTargetUrl(text);
-      var a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); }, 200);
     }
 
     function openModal(id) {
@@ -747,7 +606,6 @@
         waBtn.rel = 'noopener noreferrer';
       }
 
-      syncModalSelectButton(id);
       if (modal) modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
     }
@@ -757,16 +615,6 @@
       var modal = document.getElementById('projectModal');
       if (modal) modal.classList.add('hidden');
       document.body.style.overflow = '';
-    }
-
-    function syncModalSelectButton(id) {
-      var selectText = document.getElementById('modal-select-text');
-      var isSelected = selectedProjectIds.has(id);
-      if (selectText) selectText.textContent = isSelected ? 'Quitar de mi lista' : 'Agregar a mi lista';
-    }
-
-    function modalToggleSelect() {
-      if (currentActiveModalId) toggleSelectProject(currentActiveModalId);
     }
 
     document.addEventListener('keydown', function (e) {
